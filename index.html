@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b09">
+  <title>VESTORA | Invest · Grow · Prosper</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="#" class="logo">VEST<span>ORA</span></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+    <nav id="navigation">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#plans">Plans</a>
+      <a href="#tasks">Tasks</a>
+      <a href="#activity">Activity</a>
+    </nav>
+    <div class="profile">👤 <span>My Account</span></div>
+  </header>
+
+  <main class="container" id="dashboard">
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">WELCOME TO YOUR FUTURE</p>
+        <h1>Grow your money.<br><span>Build your future.</span></h1>
+        <p>Manage your account and explore the VESTORA platform.</p>
+      </div>
+      <div class="welcome-mark">V</div>
+    </section>
+
+    <section class="section-heading">
+      <div>
+        <p class="eyebrow">YOUR OVERVIEW</p>
+        <h2>Account Summary</h2>
+      </div>
+      <span class="demo-label">DEMO ACCOUNT</span>
+    </section>
+
+    <section class="balance-grid">
+      <article class="balance-card main-balance">
+        <p>Available Balance</p>
+        <h2>₦250,000.00</h2>
+        <span>Sample demo balance</span>
+      </article>
+      <article class="balance-card">
+        <p>Task Balance</p>
+        <h2>₦15,000.00</h2>
+        <span>Sample demo balance</span>
+      </article>
+      <article class="balance-card">
+        <p>Affiliate Balance</p>
+        <h2>₦8,500.00</h2>
+        <span>Sample demo balance</span>
+      </article>
+    </section>
+
+    <section class="section-heading">
+      <div>
+        <p class="eyebrow">QUICK ACCESS</p>
+        <h2>What would you like to do?</h2>
+      </div>
+    </section>
+
+    <section class="action-grid">
+      <a href="#deposit" class="action-card"><span>＋</span><b>Deposit</b><small>Add funds</small></a>
+      <a href="#withdraw" class="action-card"><span>↗</span><b>Withdraw</b><small>Withdrawal preview</small></a>
+      <a href="#plans" class="action-card"><span>◈</span><b>Plans</b><small>Explore plans</small></a>
+      <a href="#tasks" class="action-card"><span>✓</span><b>Tasks</b><small>View tasks</small></a>
+      <a href="#affiliate" class="action-card"><span>♧</span><b>Affiliate</b><small>Referral area</small></a>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel" id="plans">
+        <div class="panel-heading">
+          <div><p class="eyebrow">GET STARTED</p><h2>Investment Plans</h2></div>
+          <span class="status">Preview</span>
+        </div>
+        <p>Explore the plans area. Plan details and terms will be added when the platform is configured.</p>
+        <div class="plan-preview">
+          <div><b>VESTORA Starter</b><p>Sample plan preview</p></div>
+          <span>Coming soon</span>
+        </div>
+        <div class="plan-preview">
+          <div><b>VESTORA Growth</b><p>Sample plan preview</p></div>
+          <span>Coming soon</span>
+        </div>
+      </article>
+
+      <article class="panel" id="tasks">
+        <div class="panel-heading">
+          <div><p class="eyebrow">DAILY ACTIVITY</p><h2>Tasks</h2></div>
+          <span class="status">Preview</span>
+        </div>
+        <p>Complete platform activities when tasks become available.</p>
+        <div class="task-row"><span>Explore your dashboard</span><b>Preview</b></div>
+        <div class="task-row"><span>Visit the plans section</span><b>Preview</b></div>
+        <div class="task-row"><span>Review your account</span><b>Preview</b></div>
+      </article>
+    </section>
+
+    <section class="panel activity-panel" id="activity">
+      <p class="eyebrow">ACCOUNT HISTORY</p>
+      <h2>Recent Activity</h2>
+      <p class="empty-state">Your activity will appear here when account features are connected.</p>
+    </section>
+
+    <section class="panel" id="deposit">
+      <p class="eyebrow">ACCOUNT ACTIONS</p>
+      <h2>Deposit & Withdrawal</h2>
+      <p>This is a visual preview only. No real money can be deposited or withdrawn yet.</p>
+      <div class="action-buttons">
+        <button type="button" class="primary-btn" onclick="alert('Deposit feature is coming soon.')">Deposit</button>
+        <button type="button" class="secondary-btn" id="withdraw" onclick="alert('Withdrawal feature is coming soon.')">Withdraw</button>
+      </div>
+    </section>
+
+    <section class="panel" id="affiliate">
+      <p class="eyebrow">GROW THE COMMUNITY</p>
+      <h2>Affiliate Programme</h2>
+      <p>Your referral tools will appear here once affiliate features are connected.</p>
+    </section>
+
+    <footer>
+      <a href="#" class="logo">VEST<span>ORA</span></a>
+      <p>INVEST · GROW · PROSPER</p>
+      <small>© 2026 VESTORA. Demo website.</small>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+  </html>

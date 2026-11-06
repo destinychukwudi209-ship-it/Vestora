@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,163 +6,526 @@
   <meta name="theme-color" content="#080b09">
   <title>VESTORA | Invest · Grow · Prosper</title>
   <link rel="stylesheet" href="styles.css">
-
-  <!-- Supabase library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    [hidden] { display: none !important; }
+
+    .auth-wrap {
+      width: min(440px, 92%);
+      margin: 55px auto;
+      padding: 30px;
+      background: #111713;
+      border: 1px solid #263329;
+      border-radius: 18px;
+    }
+
+    .auth-logo {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+
+    .auth-logo span { color: #b7ff38; }
+
+    .auth-subtitle {
+      text-align: center;
+      color: #929b91;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .auth-tabs button {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #263329;
+      border-radius: 8px;
+      background: transparent;
+      color: white;
+    }
+
+    .auth-tabs button.active {
+      background: #b7ff38;
+      color: #080b09;
+      font-weight: bold;
+    }
+
+    .auth-form label {
+      display: block;
+      margin: 14px 0 6px;
+      color: #b7ff38;
+      font-size: 12px;
+    }
+
+    .auth-form input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #30442d;
+      border-radius: 8px;
+      background: #080b09;
+      color: white;
+      font-size: 15px;
+    }
+
+    .auth-submit {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #b7ff38;
+      color: #080b09;
+      font-weight: bold;
+    }
+
+    .auth-message {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #b7ff38;
+      overflow-wrap: anywhere;
+    }
+
+    .auth-switch {
+      margin-top: 18px;
+      text-align: center;
+      color: #929b91;
+      font-size: 13px;
+    }
+
+    .auth-switch button {
+      border: 0;
+      background: none;
+      color: #b7ff38;
+      font-weight: bold;
+    }
+
+    .logout-btn {
+      padding: 9px 14px;
+      border: 1px solid #b7ff38;
+      border-radius: 8px;
+      background: transparent;
+      color: #b7ff38;
+    }
+  </style>
 </head>
 
 <body>
 
-  <header class="topbar">
-    <a href="#" class="logo">VEST<span>ORA</span></a>
-    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  <!-- AUTHENTICATION SCREEN -->
+  <section id="authScreen" class="auth-wrap">
+    <div class="auth-logo">VEST<span>ORA</span></div>
+    <p class="auth-subtitle">INVEST · GROW · PROSPER</p>
 
-    <nav id="navigation">
-      <a href="#dashboard">Dashboard</a>
-      <a href="#plans">Plans</a>
-      <a href="#tasks">Tasks</a>
-      <a href="#activity">Activity</a>
-      <a href="support.html">Support</a>
-    </nav>
+    <div class="auth-tabs">
+      <button id="loginTab" class="active" type="button">Login</button>
+      <button id="registerTab" type="button">Register</button>
+    </div>
 
-    <div class="profile">👤 <span>My Account</span></div>
-  </header>
+    <form id="loginForm" class="auth-form">
+      <h2>Welcome Back</h2>
+      <p class="auth-subtitle">Sign in to your VESTORA account.</p>
 
-  <main class="container" id="dashboard">
+      <label for="loginPhone">Phone Number</label>
+      <input id="loginPhone" type="tel" placeholder="+2348012345678"
+        autocomplete="tel" required>
 
-    <section class="welcome">
-      <div>
-        <p class="eyebrow">WELCOME TO VESTORA</p>
-        <h1>Grow your money.<br><span>Build your future.</span></h1>
-        <p>INVEST · GROW · PROSPER</p>
-      </div>
-      <div class="welcome-mark">V</div>
-    </section>
+      <label for="loginPassword">Password</label>
+      <input id="loginPassword" type="password"
+        autocomplete="current-password" required>
 
-    <section class="section-heading">
-      <div>
-        <p class="eyebrow">YOUR OVERVIEW</p>
-        <h2>Account Summary</h2>
-      </div>
-    </section>
+      <button class="auth-submit" type="submit">Login</button>
+      <p class="auth-switch">
+        New to VESTORA?
+        <button type="button" id="showRegister">Create an account</button>
+      </p>
+    </form>
 
-    <section class="balance-grid">
-      <article class="balance-card main-balance">
-        <p>Available Balance</p>
-        <h2>₦0.00</h2>
-        <span>Your account balance</span>
-      </article>
+    <form id="registerForm" class="auth-form" hidden>
+      <h2>Create Account</h2>
+      <p class="auth-subtitle">Join VESTORA today.</p>
 
-      <article class="balance-card">
-        <p>Investment Balance</p>
-        <h2>₦0.00</h2>
-        <span>Investment funds</span>
-      </article>
+      <label for="fullName">Full Name</label>
+      <input id="fullName" type="text" placeholder="Your full name"
+        autocomplete="name" required>
 
-      <article class="balance-card">
-        <p>Task Balance</p>
-        <h2>₦0.00</h2>
-        <span>Task rewards</span>
-      </article>
+      <label for="registerPhone">Phone Number</label>
+      <input id="registerPhone" type="tel" placeholder="+2348012345678"
+        autocomplete="tel" required>
 
-      <article class="balance-card">
-        <p>Affiliate Balance</p>
-        <h2>₦0.00</h2>
-        <span>Referral rewards</span>
-      </article>
-    </section>
+      <label for="registerPassword">Create Password</label>
+      <input id="registerPassword" type="password"
+        placeholder="At least 8 characters"
+        autocomplete="new-password" minlength="8" required>
 
-    <section class="section-heading">
-      <div>
-        <p class="eyebrow">QUICK ACCESS</p>
-        <h2>What would you like to do?</h2>
-      </div>
-    </section>
+      <button class="auth-submit" type="submit">Create Account</button>
 
-    <section class="action-grid">
-      <a href="#deposit" class="action-card">
-        <span>＋</span><b>Deposit</b><small>Add funds</small>
-      </a>
-      <a href="#withdraw" class="action-card">
-        <span>↗</span><b>Withdraw</b><small>Request withdrawal</small>
-      </a>
-      <a href="#plans" class="action-card">
-        <span>◈</span><b>Plans</b><small>Investment plans</small>
-      </a>
-      <a href="#tasks" class="action-card">
-        <span>✓</span><b>Tasks</b><small>Daily activities</small>
-      </a>
-      <a href="#affiliate" class="action-card">
-        <span>♧</span><b>Affiliate</b><small>Referral programme</small>
-      </a>
-    </section>
+      <p class="auth-switch">
+        Already registered?
+        <button type="button" id="showLogin">Login</button>
+      </p>
+    </form>
 
-    <section class="content-grid">
+    <form id="otpForm" class="auth-form" hidden>
+      <h2>Verify Your Phone</h2>
+      <p class="auth-subtitle">
+        Enter the six-digit code sent to your phone.
+      </p>
 
-      <article class="panel" id="plans">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">GET STARTED</p>
-            <h2>Investment Plans</h2>
-          </div>
-        </div>
-        <p>Available investment plans will appear here.</p>
-      </article>
+      <label for="otpCode">Verification Code</label>
+      <input id="otpCode" type="text" inputmode="numeric"
+        maxlength="6" placeholder="000000" required>
 
-      <article class="panel" id="tasks">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">DAILY ACTIVITY</p>
-            <h2>Tasks</h2>
-          </div>
-        </div>
-        <p>Your available tasks will appear here.</p>
-      </article>
+      <button class="auth-submit" type="submit">Verify Account</button>
+    </form>
 
-    </section>
+    <p id="authMessage" class="auth-message" role="status"></p>
+  </section>
 
-    <section class="panel" id="activity">
-      <p class="eyebrow">ACCOUNT HISTORY</p>
-      <h2>Recent Activity</h2>
-      <p class="empty-state">Your transactions will appear here.</p>
-    </section>
+  <!-- CUSTOMER DASHBOARD -->
+  <div id="dashboardScreen" hidden>
 
-    <section class="panel" id="deposit">
-      <p class="eyebrow">ACCOUNT ACTIONS</p>
-      <h2>Deposit</h2>
-      <p>Deposit options will appear here after secure payment integration.</p>
-    </section>
-
-    <section class="panel" id="withdraw">
-      <p class="eyebrow">ACCOUNT ACTIONS</p>
-      <h2>Withdraw</h2>
-      <p>Withdrawal options will appear here after secure backend integration.</p>
-    </section>
-
-    <section class="panel" id="affiliate">
-      <p class="eyebrow">GROW THE COMMUNITY</p>
-      <h2>Affiliate Programme</h2>
-      <p>Your referral information will appear here.</p>
-    </section>
-
-    <footer>
+    <header class="topbar">
       <a href="#" class="logo">VEST<span>ORA</span></a>
-      <p>INVEST · GROW · PROSPER</p>
-      <small>© 2026 VESTORA.</small>
-    </footer>
+      <button class="menu-btn" id="menuBtn"
+        aria-label="Toggle menu">☰</button>
 
-  </main>
+      <nav id="navigation">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#plans">Plans</a>
+        <a href="#tasks">Tasks</a>
+        <a href="#activity">Activity</a>
+        <a href="support.html">Support</a>
+      </nav>
 
-  <!-- Connect VESTORA to Supabase -->
+      <div class="profile">
+        <span id="customerName">My Account</span>
+        <button id="logoutBtn" class="logout-btn" type="button">
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <main class="container" id="dashboard">
+
+      <section class="welcome">
+        <div>
+          <p class="eyebrow">WELCOME TO VESTORA</p>
+          <h1>Grow your money.<br><span>Build your future.</span></h1>
+          <p>INVEST · GROW · PROSPER</p>
+        </div>
+        <div class="welcome-mark">V</div>
+      </section>
+
+      <section class="section-heading">
+        <div>
+          <p class="eyebrow">YOUR OVERVIEW</p>
+          <h2>Account Summary</h2>
+        </div>
+      </section>
+
+      <section class="balance-grid">
+        <article class="balance-card main-balance">
+          <p>Available Balance</p>
+          <h2>₦0.00</h2>
+          <span>Your account balance</span>
+        </article>
+
+        <article class="balance-card">
+          <p>Investment Balance</p>
+          <h2>₦0.00</h2>
+          <span>Investment funds</span>
+        </article>
+
+        <article class="balance-card">
+          <p>Task Balance</p>
+          <h2>₦0.00</h2>
+          <span>Task rewards</span>
+        </article>
+
+        <article class="balance-card">
+          <p>Affiliate Balance</p>
+          <h2>₦0.00</h2>
+          <span>Referral rewards</span>
+        </article>
+      </section>
+
+      <section class="section-heading">
+        <div>
+          <p class="eyebrow">QUICK ACCESS</p>
+          <h2>What would you like to do?</h2>
+        </div>
+      </section>
+
+      <section class="action-grid">
+        <a href="#deposit" class="action-card">
+          <span>＋</span><b>Deposit</b><small>Add funds</small>
+        </a>
+        <a href="#withdraw" class="action-card">
+          <span>↗</span><b>Withdraw</b><small>Request withdrawal</small>
+        </a>
+        <a href="#plans" class="action-card">
+          <span>◈</span><b>Plans</b><small>Investment plans</small>
+        </a>
+        <a href="#tasks" class="action-card">
+          <span>✓</span><b>Tasks</b><small>Daily activities</small>
+        </a>
+        <a href="#affiliate" class="action-card">
+          <span>♧</span><b>Affiliate</b><small>Referral programme</small>
+        </a>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel" id="plans">
+          <p class="eyebrow">GET STARTED</p>
+          <h2>Investment Plans</h2>
+          <p>Available investment plans will appear here.</p>
+        </article>
+
+        <article class="panel" id="tasks">
+          <p class="eyebrow">DAILY ACTIVITY</p>
+          <h2>Tasks</h2>
+          <p>Your available tasks will appear here.</p>
+        </article>
+      </section>
+
+      <section class="panel" id="activity">
+        <p class="eyebrow">ACCOUNT HISTORY</p>
+        <h2>Recent Activity</h2>
+        <p class="empty-state">Your transactions will appear here.</p>
+      </section>
+
+      <section class="panel" id="deposit">
+        <p class="eyebrow">ACCOUNT ACTIONS</p>
+        <h2>Deposit</h2>
+        <p>Deposit options will appear here after secure payment integration.</p>
+      </section>
+
+      <section class="panel" id="withdraw">
+        <p class="eyebrow">ACCOUNT ACTIONS</p>
+        <h2>Withdraw</h2>
+        <p>Withdrawal options will appear here after secure backend integration.</p>
+      </section>
+
+      <section class="panel" id="affiliate">
+        <p class="eyebrow">GROW THE COMMUNITY</p>
+        <h2>Affiliate Programme</h2>
+        <p>Your referral information will appear here.</p>
+      </section>
+
+      <footer>
+        <a href="#" class="logo">VEST<span>ORA</span></a>
+        <p>INVEST · GROW · PROSPER</p>
+        <small>© 2026 VESTORA.</small>
+      </footer>
+
+    </main>
+  </div>
+
   <script>
-    window.vestoraSupabase = window.supabase.createClient(
+    const supabaseClient = window.supabase.createClient(
       "https://rqdqfjcjakkbjnzhklas.supabase.co",
       "sb_publishable_Kytlo-JZc6qRwf4A98N86g_0-e91XYW"
     );
+
+    const authScreen = document.getElementById("authScreen");
+    const dashboardScreen = document.getElementById("dashboardScreen");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const otpForm = document.getElementById("otpForm");
+    const authMessage = document.getElementById("authMessage");
+
+    let pendingPhone = "";
+
+    function message(text) {
+      authMessage.textContent = text;
+    }
+
+    function showForm(form) {
+      loginForm.hidden = form !== "login";
+      registerForm.hidden = form !== "register";
+      otpForm.hidden = form !== "otp";
+
+      document.getElementById("loginTab").classList.toggle(
+        "active", form === "login"
+      );
+      document.getElementById("registerTab").classList.toggle(
+        "active", form === "register"
+      );
+
+      message("");
+    }
+
+    function showDashboard(user) {
+      authScreen.hidden = true;
+      dashboardScreen.hidden = false;
+
+      const name = user.user_metadata?.full_name;
+      document.getElementById("customerName").textContent =
+        name || user.phone || "My Account";
+    }
+
+    function showAuthentication() {
+      dashboardScreen.hidden = true;
+      authScreen.hidden = false;
+      showForm("login");
+    }
+
+    document.getElementById("loginTab").onclick =
+      () => showForm("login");
+
+    document.getElementById("registerTab").onclick =
+      () => showForm("register");
+
+    document.getElementById("showRegister").onclick =
+      () => showForm("register");
+
+    document.getElementById("showLogin").onclick =
+      () => showForm("login");
+
+    registerForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const fullName = document.getElementById("fullName").value.trim();
+      const phone = document.getElementById("registerPhone").value.trim();
+      const password = document.getElementById("registerPassword").value;
+
+      if (!phone.startsWith("+")) {
+        message("Enter your phone number with country code, e.g. +2348012345678.");
+        return;
+      }
+
+      message("Creating your account...");
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        phone,
+        password,
+        options: {
+          data: { full_name: fullName }
+        }
+      });
+
+      if (error) {
+        message(error.message);
+        return;
+      }
+
+      if (data.session) {
+        showDashboard(data.user);
+        return;
+      }
+
+      pendingPhone = phone;
+      showForm("otp");
+      message("Your account was created. SMS verification must be configured to receive your code.");
+    });
+
+    otpForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const token = document.getElementById("otpCode").value.trim();
+
+      message("Verifying your code...");
+
+      const { data, error } = await supabaseClient.auth.verifyOtp({
+        phone: pendingPhone,
+        token,
+        type: "sms"
+      });
+
+      if (error) {
+        message(error.message);
+        return;
+      }
+
+      showDashboard(data.user);
+    });
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const phone = document.getElementById("loginPhone").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      if (!phone.startsWith("+")) {
+        message("Enter your phone number with country code, e.g. +2348012345678.");
+        return;
+      }
+
+      message("Signing you in...");
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        phone,
+        password
+      });
+
+      if (error) {
+        message(error.message);
+        return;
+      }
+
+      showDashboard(data.user);
+    });
+
+    document.getElementById("logoutBtn").onclick = async () => {
+      const { error } = await supabaseClient.auth.signOut();
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      showAuthentication();
+    };
+
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        showDashboard(session.user);
+      } else {
+        showAuthentication();
+      }
+    });
+
+    async function startApp() {
+      const { data, error } = await supabaseClient.auth.getSession();
+
+      if (error) {
+        message(error.message);
+        showAuthentication();
+        return;
+      }
+
+      if (data.session?.user) {
+        showDashboard(data.session.user);
+      } else {
+        showAuthentication();
+      }
+    }
+
+    const menuBtn = document.getElementById("menuBtn");
+    const navigation = document.getElementById("navigation");
+
+    if (menuBtn && navigation) {
+      menuBtn.addEventListener("click", () => {
+        navigation.classList.toggle("open");
+      });
+
+      navigation.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navigation.classList.remove("open");
+        });
+      });
+    }
+
+    startApp();
   </script>
 
-  <script src="script.js"></script>
-
 </body>
-  </html>
-  
+                               </html>

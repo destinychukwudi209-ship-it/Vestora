@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Support | VESTORA</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #080b08;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #242a24;
+    }
+
+    .logo {
+      color: #b5ff32;
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .back {
+      color: #b5ff32;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 850px;
+      margin: 45px auto;
+      padding: 0 20px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .intro h1 {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .intro h1 span {
+      color: #b5ff32;
+    }
+
+    .intro p {
+      color: #a5aaa5;
+      line-height: 1.6;
+    }
+
+    .panel {
+      background: #111711;
+      border: 1px solid #293329;
+      border-radius: 15px;
+      padding: 27px;
+      margin-bottom: 22px;
+    }
+
+    .panel h2 {
+      font-size: 19px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 8px;
+      color: #d9dfd9;
+      font-size: 14px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px;
+      background: #080d08;
+      border: 1px solid #343e34;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #b5ff32;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      background: #b5ff32;
+      color: #080b08;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .notice {
+      color: #b8c0b8;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 15px;
+    }
+
+    .inbox {
+      border: 1px dashed #465246;
+      border-radius: 10px;
+      padding: 22px;
+      text-align: center;
+      color: #a5aaa5;
+      line-height: 1.7;
+    }
+
+    .inbox strong {
+      display: block;
+      color: #b5ff32;
+      margin-bottom: 7px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 15px;
+      color: #777f77;
+      font-size: 12px;
+      border-top: 1px solid #242a24;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 600px) {
+      .intro h1 {
+        font-size: 26px;
+      }
+
+      .panel {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">VESTORA</div>
+    <a class="back" href="index.html">← Back to Dashboard</a>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Customer <span>Support</span></h1>
+      <p>
+        We're here to help. Send our support team a message
+        and get assistance with your VESTORA account.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>Send us a message</h2>
+
+      <form id="supportForm">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" placeholder="Enter your full name" required>
+
+        <label for="email">Email Address</label>
+        <input id="email" type="email" placeholder="Enter your email" required>
+
+        <label for="subject">What do you need help with?</label>
+        <select id="subject" required>
+          <option value="">Choose a topic</option>
+          <option>Account and Login</option>
+          <option>Deposit</option>
+          <option>Withdrawal</option>
+          <option>Investment Plans</option>
+          <option>Tasks and Rewards</option>
+          <option>Referral and Affiliate</option>
+          <option>Other</option>
+        </select>
+
+        <label for="message">Your Message</label>
+        <textarea id="message" placeholder="Explain how we can help you..." required></textarea>
+
+        <button type="submit">Send Message</button>
+
+        <p class="notice">
+          Your support form is ready. Secure message delivery and
+          private admin replies will be activated when the VESTORA
+          backend is connected.
+        </p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>My Support Messages</h2>
+      <div class="inbox">
+        <strong>Your Support Inbox</strong>
+        Your conversations and replies from the VESTORA
+        support team will appear here once connected.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 VESTORA. INVEST · GROW · PROSPER.
+  </footer>
+
+  <script>
+    document.getElementById("supportForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      alert("Customer Support is not connected yet. Your message has not been sent. Please check back after the secure backend is activated.");
+    });
+  </script>
+
+</body>
+  </html>
+  

@@ -6,20 +6,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080b09">
 <title>VESTORA | Invest · Grow · Prosper</title>
-
 <link rel="stylesheet" href="styles.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 [hidden]{display:none!important}
 :root{--bg:#080b09;--surface:#101612;--lime:#b7ff38;--muted:#929b91;--border:rgba(183,255,56,.14)}
+*{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:#f4f7f2;font-family:Arial,sans-serif}
 button,input,select{font:inherit}
 button{cursor:pointer}
 .app{min-height:100vh}
 .topbar{position:sticky;top:0;z-index:20;background:#0b100d;border-bottom:1px solid var(--border);padding:15px 4%;display:flex;align-items:center;justify-content:space-between}
 .logo{font-size:22px;font-weight:900;letter-spacing:2px;color:white;text-decoration:none}
-.logo span{color:var(--lime)}
+.logo span,.auth-logo span{color:var(--lime)}
 .top-actions{display:flex;align-items:center;gap:12px}
 .menu-btn,.icon-btn{background:#151e18;color:white;border:1px solid var(--border);padding:10px 14px;border-radius:9px}
 .menu-btn{display:none}
@@ -62,19 +62,19 @@ main{padding:30px 4%;min-width:0}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .field{margin:14px 0}
 .field label{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}
-.field input,.field select{width:100%;box-sizing:border-box;padding:12px;background:#080b09;border:1px solid #30442d;border-radius:8px;color:white}
+.field input,.field select{width:100%;padding:12px;background:#080b09;border:1px solid #30442d;border-radius:8px;color:white}
 .notice{padding:13px;background:rgba(183,255,56,.07);border:1px solid var(--border);border-radius:9px;color:var(--muted);font-size:11px;line-height:1.7;margin:13px 0}
 .status{font-size:10px;color:var(--lime);background:rgba(183,255,56,.08);padding:6px 9px;border-radius:20px}
 .list-row{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid var(--border);font-size:12px}
-.auth-wrap{width:min(430px,90%);margin:45px auto;padding:28px;box-sizing:border-box;background:var(--surface);border:1px solid var(--border);border-radius:17px;box-shadow:0 25px 70px rgba(0,0,0,.4)}
+.divider{height:1px;background:var(--border);margin:20px 0}
+.auth-wrap{width:min(430px,90%);margin:45px auto;padding:28px;background:var(--surface);border:1px solid var(--border);border-radius:17px;box-shadow:0 25px 70px rgba(0,0,0,.4)}
 .auth-logo{text-align:center;font-size:30px;font-weight:900;letter-spacing:3px}
-.auth-logo span{color:var(--lime)}
 .auth-sub{text-align:center;color:var(--muted);font-size:12px;margin:8px 0 24px}
 .auth-tabs{display:flex;gap:8px;margin-bottom:20px}
 .auth-tabs button{flex:1;padding:12px;border:1px solid var(--border);border-radius:8px;background:transparent;color:white}
 .auth-tabs button.active{background:var(--lime);color:#080b09;font-weight:bold}
 .auth-form label{display:block;color:var(--lime);font-size:11px;margin:14px 0 6px}
-.auth-form input{width:100%;box-sizing:border-box;padding:13px;background:#080b09;border:1px solid #30442d;border-radius:8px;color:white}
+.auth-form input{width:100%;padding:13px;background:#080b09;border:1px solid #30442d;border-radius:8px;color:white}
 .auth-submit{width:100%;margin-top:20px;min-height:44px}
 .auth-switch{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
 .auth-switch button{border:0;background:none;color:var(--lime)}
@@ -113,13 +113,10 @@ main{padding:22px 4%}
   <form id="loginForm" class="auth-form">
     <h2>Welcome Back</h2>
     <p class="muted">Sign in to your VESTORA account.</p>
-
     <label for="loginEmail">Email Address</label>
     <input id="loginEmail" type="email" autocomplete="email" required>
-
     <label for="loginPassword">Password</label>
     <input id="loginPassword" type="password" autocomplete="current-password" required>
-
     <button class="btn auth-submit" type="submit">Sign In</button>
     <p class="auth-switch">New to VESTORA?
       <button id="showRegister" type="button">Create an account</button>
@@ -129,16 +126,12 @@ main{padding:22px 4%}
   <form id="registerForm" class="auth-form" hidden>
     <h2>Create Account</h2>
     <p class="muted">Join VESTORA today.</p>
-
     <label for="fullName">Full Name</label>
     <input id="fullName" type="text" autocomplete="name" required>
-
     <label for="registerEmail">Email Address</label>
     <input id="registerEmail" type="email" autocomplete="email" required>
-
     <label for="registerPassword">Password (minimum 8 characters)</label>
     <input id="registerPassword" type="password" minlength="8" autocomplete="new-password" required>
-
     <button class="btn auth-submit" type="submit">Create Account</button>
     <p class="auth-switch">Already registered?
       <button id="showLogin" type="button">Sign in</button>
@@ -148,575 +141,685 @@ main{padding:22px 4%}
   <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
 </section>
 
-<div id="dashboardScreen" class="app" hidden>
-  <header class="topbar">
-    <button id="menuBtn" class="menu-btn" type="button">☰</button>
-    <a class="logo" href="#dashboard">VEST<span>ORA</span></a>
-    <div class="top-actions">
-      <button class="icon-btn" type="button" data-page="notifications">♧</button>
-      <div class="profile-pill">
-        <span class="avatar" id="avatarInitial">V</span>
-        <span id="customerName">My Account</span>
-      </div>
+<div id="customerApp" class="app" hidden>
+
+<header class="topbar">
+  <button id="menuButton" class="menu-btn" type="button">☰</button>
+  <a class="logo" href="#">VEST<span>ORA</span></a>
+  <div class="top-actions">
+    <button class="icon-btn" data-page="notifications" type="button">♧</button>
+    <div class="profile-pill">
+      <div class="avatar" id="userAvatar">V</div>
+      <span id="customerName">My Account</span>
     </div>
-  </header>
+  </div>
+</header>
 
-  <div class="layout">
-    <aside id="sidebar" class="sidebar">
-      <div class="side-label">MAIN MENU</div>
-      <a class="nav-link active" href="#dashboard" data-page="dashboard"><span>▦</span>Dashboard</a>
-      <a class="nav-link" href="#investments" data-page="investments"><span>◈</span>Investments</a>
-      <a class="nav-link" href="#tasks" data-page="tasks"><span>✓</span>Daily Tasks</a>
-      <a class="nav-link" href="#affiliate" data-page="affiliate"><span>♧</span>Affiliate Centre</a>
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <div class="side-label">MAIN MENU</div>
+    <a class="nav-link active" href="#" data-page="dashboard"><span>⌂</span> Dashboard</a>
+    <a class="nav-link" href="#" data-page="investments"><span>▥</span> Investments</a>
+    <a class="nav-link" href="#" data-page="wallet"><span>◈</span> Deposit & Withdraw</a>
+    <a class="nav-link" href="#" data-page="earnings"><span>↗</span> Earnings & Withdrawals</a>
+    <a class="nav-link" href="#" data-page="tasks"><span>✓</span> Daily Tasks</a>
+    <a class="nav-link" href="#" data-page="affiliate"><span>♧</span> Affiliate Centre</a>
 
-      <div class="side-label">MY FINANCES</div>
-      <a class="nav-link" href="#wallet" data-page="wallet"><span>◉</span>Wallets</a>
-      <a class="nav-link" href="#payments" data-page="payments"><span>↔</span>Deposits & Withdrawals</a>
-      <a class="nav-link" href="#activity" data-page="activity"><span>↗</span>Transaction History</a>
-      <a class="nav-link" href="#rewards" data-page="rewards"><span>★</span>Rewards & Promos</a>
+    <div class="side-label">ACCOUNT</div>
+    <a class="nav-link" href="#" data-page="transactions"><span>▤</span> Transactions</a>
+    <a class="nav-link" href="#" data-page="notifications"><span>♧</span> Notifications</a>
+    <a class="nav-link" href="#" data-page="profile"><span>◉</span> My Profile</a>
+    <a class="nav-link" href="#" data-page="settings"><span>⚙</span> Settings</a>
+    <a class="nav-link" href="#" data-page="support"><span>?</span> Support Centre</a>
 
-      <div class="side-label">ACCOUNT</div>
-      <a class="nav-link" href="#notifications" data-page="notifications"><span>♧</span>Notifications</a>
-      <a class="nav-link" href="#documents" data-page="documents"><span>▤</span>Documents</a>
-      <a class="nav-link" href="#support" data-page="support"><span>✉</span>Support Centre</a>
-      <a class="nav-link" href="#profile" data-page="profile"><span>◎</span>My Profile</a>
-      <a class="nav-link" href="#settings" data-page="settings"><span>⚙</span>Settings</a>
-      <a class="nav-link" href="#security" data-page="security"><span>⬡</span>Security Centre</a>
+    <div class="divider"></div>
+    <button id="logoutButton" class="btn btn-outline" type="button" style="width:100%">Log Out</button>
+  </aside>
 
-      <button class="btn btn-outline" id="logoutBtn" type="button" style="width:100%;margin-top:22px">Sign Out</button>
-    </aside>
+  <main>
 
-    <main>
-      <section class="page active" id="page-dashboard">
-        <div class="page-heading">
-          <div>
-            <p class="eyebrow">VESTORA / OVERVIEW</p>
-            <h1>Dashboard</h1>
-            <p class="muted">Welcome back, <span id="welcomeName">Investor</span>.</p>
+    <section id="page-dashboard" class="page active">
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">VESTORA CUSTOMER PORTAL</div>
+          <h2>Welcome back,<br><span id="welcomeName">Investor</span></h2>
+          <p class="muted">Your financial journey starts here.</p>
+        </div>
+        <div class="welcome-mark">V</div>
+      </div>
+
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow">ACCOUNT OVERVIEW</div>
+          <h1>My Dashboard</h1>
+          <p class="muted">Your account balances at a glance.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <p>Available Balance</p>
+          <h2 id="availableBalance">₦0.00</h2>
+          <span class="muted">Available funds</span>
+        </div>
+        <div class="card">
+          <p>Investment Balance</p>
+          <h2 id="investmentBalance">₦0.00</h2>
+          <span class="muted">Active investments</span>
+        </div>
+        <div class="card">
+          <p>Task Balance</p>
+          <h2 id="taskBalance">₦0.00</h2>
+          <span class="muted">Task earnings</span>
+        </div>
+        <div class="card">
+          <p>Affiliate Balance</p>
+          <h2 id="affiliateBalance">₦0.00</h2>
+          <span class="muted">Referral commissions</span>
+        </div>
+      </div>
+
+      <h2 class="section-title">Quick Access</h2>
+      <div class="quick-grid">
+        <a class="quick" href="#" data-page="wallet">
+          <span class="quick-icon">＋</span>
+          <strong>Deposit</strong>
+          <small>Add funds</small>
+        </a>
+        <a class="quick" href="#" data-page="wallet">
+          <span class="quick-icon">↗</span>
+          <strong>Withdraw</strong>
+          <small>Request payout</small>
+        </a>
+        <a class="quick" href="#" data-page="investments">
+          <span class="quick-icon">▥</span>
+          <strong>Plans</strong>
+          <small>Explore plans</small>
+        </a>
+        <a class="quick" href="#" data-page="tasks">
+          <span class="quick-icon">✓</span>
+          <strong>Tasks</strong>
+          <small>Earn rewards</small>
+        </a>
+        <a class="quick" href="#" data-page="affiliate">
+          <span class="quick-icon">♧</span>
+          <strong>Affiliate</strong>
+          <small>Refer friends</small>
+        </a>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <h2>My Investment Plans</h2>
+          <p class="muted">Your active investment information.</p>
+          <div id="dashboardInvestments" class="empty">
+            Your investment information will appear here when available.
           </div>
-          <span class="status">CUSTOMER PORTAL</span>
         </div>
-
-        <div class="welcome">
-          <div>
-            <p class="eyebrow">INVEST · GROW · PROSPER</p>
-            <h2>Build your future<br><span>with confidence.</span></h2>
-            <p class="muted">Your financial journey, all in one place.</p>
+        <div class="panel">
+          <h2>Daily Activities</h2>
+          <p class="muted">Tasks and available rewards.</p>
+          <div id="dashboardTasks" class="empty">
+            Your available tasks will appear here.
           </div>
-          <div class="welcome-mark">V</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Recent Activity</h2>
+        <p class="muted">Your latest account transactions.</p>
+        <div id="dashboardActivity" class="empty">
+          No recent activity to display.
+        </div>
+      </div>
+    </section>
+
+    <section id="page-investments" class="page">
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow">GROW YOUR PORTFOLIO</div>
+          <h1>Investment Plans</h1>
+          <p class="muted">Explore available investment opportunities.</p>
+        </div>
+      </div>
+      <div id="investmentPlans" class="empty">
+        Investment plans will load from the platform database.
+      </div>
+      <div class="panel">
+        <h2>My Portfolio</h2>
+        <div id="myPortfolio" class="empty">Your investment records will appear here.</div>
+      </div>
+    </section>
+
+    <section id="page-wallet" class="page">
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow">ACCOUNT FINANCE</div>
+          <h1>Deposit & Withdraw</h1>
+          <p class="muted">Manage deposits, payment proof and withdrawal requests.</p>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <h2>Make a Deposit</h2>
+          <div class="field">
+            <label for="depositAmount">Deposit Amount (₦)</label>
+            <input id="depositAmount" type="number" min="1" placeholder="Enter amount">
+          </div>
+          <div class="field">
+            <label for="depositReference">Payment Reference</label>
+            <input id="depositReference" type="text" placeholder="Payment reference">
+          </div>
+          <div class="field">
+            <label for="depositProof">Upload Payment Proof</label>
+            <input id="depositProof" type="file" accept="image/*,.pdf">
+          </div>
+          <button id="depositButton" class="btn" type="button">Submit Deposit</button>
+          <p class="muted">Deposits require payment verification before funds can be credited.</p>
         </div>
 
-        <div class="section-title">
-          <p class="eyebrow">YOUR FINANCIAL OVERVIEW</p>
-          <h2>Account Summary</h2>
+        <div class="panel">
+          <h2>Request a Withdrawal</h2>
+          <div class="field">
+            <label for="withdrawAmount">Withdrawal Amount (₦)</label>
+            <input id="withdrawAmount" type="number" min="1" placeholder="Enter amount">
+          </div>
+          <div class="field">
+            <label for="withdrawSource">Withdrawal Source</label>
+            <select id="withdrawSource">
+              <option value="available">Available Balance</option>
+              <option value="task">Task Earnings</option>
+              <option value="affiliate">Affiliate Earnings</option>
+            </select>
+          </div>
+          <button id="withdrawButton" class="btn" type="button">Continue to Verification</button>
+          <p class="muted">Withdrawal requests require account security verification.</p>
         </div>
+      </div>
+      <div class="panel">
+        <h2>Deposit & Withdrawal History</h2>
+        <div id="walletHistory" class="empty">Your payment records will appear here.</div>
+      </div>
+    </section>
 
-        <div class="grid">
-          <article class="card"><p>Available Balance</p><h2>₦—</h2><small class="muted">Wallet connection pending</small></article>
-          <article class="card"><p>Investment Balance</p><h2>₦—</h2><small class="muted">Portfolio connection pending</small></article>
-          <article class="card"><p>Task Earnings</p><h2>₦—</h2><small class="muted">Task records pending</small></article>
-          <article class="card"><p>Affiliate Earnings</p><h2>₦—</h2><small class="muted">Referral records pending</small></article>
+    <section id="page-earnings" class="page">
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow">YOUR REWARDS</div>
+          <h1>Earnings & Withdrawals</h1>
+          <p class="muted">Manage task and affiliate earnings separately.</p>
         </div>
+      </div>
+      <div class="grid">
+        <div class="card"><p>Task Earnings</p><h2 id="earningsTaskBalance">₦0.00</h2></div>
+        <div class="card"><p>Affiliate Earnings</p><h2 id="earningsAffiliateBalance">₦0.00</h2></div>
+      </div>
+      <div class="panel">
+        <h2>Withdrawal History</h2>
+        <div id="earningsHistory" class="empty">Your earnings withdrawal records will appear here.</div>
+      </div>
+    </section>
 
-        <div class="section-title">
-          <p class="eyebrow">QUICK ACCESS</p>
-          <h2>Manage Your Account</h2>
+    <section id="page-tasks" class="page">
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow">EARN REWARDS</div>
+          <h1>Daily Tasks</h1>
+          <p class="muted">View available tasks and track submissions.</p>
         </div>
+      </div>
+      <div id="taskList" class="empty">Available tasks will appear here.</div>
+      <div class="panel">
+        <h2>My Task History</h2>
+        <div id="taskHistory" class="empty">Your task submissions will appear here.</div>
+      </div>
+    </section>
 
-        <div class="quick-grid">
-          <a class="quick" href="#payments" data-page="payments"><span class="quick-icon">＋</span><strong>Deposit</strong><small>Add funds</small></a>
-          <a class="quick" href="#payments" data-page="payments"><span class="quick-icon">↗</span><strong>Withdraw</strong><small>Request payout</small></a>
-          <a class="quick" href="#investments" data-page="investments"><span class="quick-icon">◈</span><strong>Invest</strong><small>Explore plans</small></a>
-          <a class="quick" href="#tasks" data-page="tasks"><span class="quick-icon">✓</span><strong>Tasks</strong><small>Earn rewards</small></a>
-          <a class="quick" href="#affiliate" data-page="affiliate"><span class="quick-icon">♧</span><strong>Affiliate</strong><small>Refer friends</small></a>
+    <section id="page-affiliate" class="page">
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow">GROW TOGETHER</div>
+          <h1>Affiliate Centre</h1>
+          <p class="muted">Track referrals and affiliate commissions.</p>
         </div>
+      </div>
+      <div class="panel">
+        <h2>Your Referral Link</h2>
+        <div id="referralLink" class="empty">Your personal referral link will appear here.</div>
+      </div>
+      <div class="panel">
+        <h2>Referral History</h2>
+        <div id="referralHistory" class="empty">Your referrals will appear here.</div>
+      </div>
+    </section>
 
-        <div class="two-col">
-          <article class="panel"><h2>Investment Plans</h2><div class="empty">Verified investment plans will appear here after database connection.</div></article>
-          <article class="panel"><h2>Recent Activity</h2><div class="empty">Your verified account activity will appear here.</div></article>
-        </div>
-      </section>
-
-      <section class="page" id="page-investments">
-        <div class="page-heading"><div><p class="eyebrow">GROW YOUR WEALTH</p><h1>Investments</h1><p class="muted">Review plans and your investment portfolio.</p></div></div>
-        <article class="panel"><h2>Available Investment Plans</h2><div class="empty">Plans will appear with verified terms, duration, fees and risk information after backend connection. Returns are not guaranteed.</div></article>
-        <article class="panel"><h2>My Portfolio</h2><div class="empty">Your active, matured and completed investment records will appear here.</div></article>
-      </section>
-
-      <section class="page" id="page-tasks">
-        <div class="page-heading"><div><p class="eyebrow">EARN REWARDS</p><h1>Daily Tasks</h1><p class="muted">View tasks and track submissions.</p></div></div>
-        <article class="panel"><h2>Available Tasks</h2><div class="empty">Tasks will appear here when configured by VESTORA.</div></article>
-        <article class="panel"><h2>My Submissions</h2><div class="empty">Your submitted tasks and review history will appear here.</div></article>
-      </section>
-
-      <section class="page" id="page-affiliate">
-        <div class="page-heading"><div><p class="eyebrow">GROW OUR COMMUNITY</p><h1>Affiliate Centre</h1><p class="muted">Manage referrals and commissions.</p></div></div>
-        <article class="panel"><h2>Your Referral Link</h2><div class="empty">Your unique referral link will appear after referral integration.</div></article>
-        <article class="panel"><h2>Referral History</h2><div class="empty">Referral and commission records will appear here.</div></article>
-      </section>
-
-      <section class="page" id="page-wallet">
-        <div class="page-heading"><div><p class="eyebrow">MY FINANCES</p><h1>My Wallets</h1></div></div>
-        <div class="grid">
-          <article class="card"><p>Available Wallet</p><h2>₦—</h2></article>
-          <article class="card"><p>Investment Wallet</p><h2>₦—</h2></article>
-          <article class="card"><p>Task Wallet</p><h2>₦—</h2></article>
-          <article class="card"><p>Affiliate Wallet</p><h2>₦—</h2></article>
-        </div>
-        <div class="notice">Wallet balances must come from the secure transaction ledger. These placeholders are not account balances.</div>
-      </section>
-
-      <section class="page" id="page-payments">
-        <div class="page-heading"><div><p class="eyebrow">PAYMENT CENTRE</p><h1>Deposits & Withdrawals</h1><p class="muted">Both payment operations in one place.</p></div></div>
-        <div class="two-col">
-          <article class="panel">
-            <h2>Make a Deposit</h2>
-            <p class="muted">Payment instructions will be provided by the configured payment provider.</p>
-            <div class="field"><label>Amount (NGN)</label><input type="number" placeholder="Enter amount" disabled></div>
-            <div class="field"><label>Payment proof</label><input type="file" disabled></div>
-            <button class="btn" disabled>Deposit service not connected</button>
-          </article>
-          <article class="panel">
-            <h2>Request Withdrawal</h2>
-            <div class="field"><label>Withdrawal Source</label><select disabled><option>Select wallet</option><option>Available Balance</option><option>Task Earnings</option><option>Affiliate Earnings</option></select></div>
-            <div class="field"><label>Amount (NGN)</label><input type="number" placeholder="Enter amount" disabled></div>
-            <div class="field"><label>Bank Details</label><input placeholder="Verified bank account" disabled></div>
-            <button class="btn" disabled>Withdrawal service not connected</button>
-            <div class="notice">Future withdrawals will require secure verification and approval.</div>
-          </article>
-        </div>
-        <article class="panel"><h2>Payment History</h2><div class="empty">Deposit and withdrawal records will appear here.</div></article>
-      </section>
-
-      <section class="page" id="page-activity">
-        <div class="page-heading"><div><p class="eyebrow">ACCOUNT HISTORY</p><h1>Transaction History</h1></div></div>
-        <article class="panel"><div class="empty">Verified transaction records will appear here.</div></article>
-      </section>
-
-      <section class="page" id="page-rewards">
-        <div class="page-heading"><div><p class="eyebrow">BENEFITS</p><h1>Rewards & Promos</h1></div></div>
-        <article class="panel"><h2>Promo Codes</h2><div class="empty">Eligible promotional codes and rewards will appear here.</div></article>
-        <article class="panel"><h2>Membership & Achievements</h2><div class="empty">Membership benefits and verified achievements will appear here.</div></article>
-      </section>
-
-      <section class="page" id="page-notifications">
-        <div class="page-heading"><div><p class="eyebrow">UPDATES</p><h1>Notifications</h1></div></div>
-        <article class="panel"><h2>Notification History</h2><div class="empty">Announcements, payment updates, investment alerts, task rewards, affiliate and security notifications will appear here.</div></article>
-      </section>
-
-      <section class="page" id="page-documents">
-        <div class="page-heading"><div><p class="eyebrow">MY RECORDS</p><h1>Document Centre</h1></div></div>
-        <article class="panel"><div class="empty">Receipts, statements, agreements and account documents will appear here.</div></article>
-      </section>
-
-      <section class="page" id="page-support">
-        <div class="page-heading"><div><p class="eyebrow">CUSTOMER CARE</p><h1>Support Centre</h1></div></div>
-        <article class="panel"><p class="muted">Get help with your VESTORA account.</p><a class="btn" href="support.html">Open Support Centre</a></article>
-      </section>
-
-      <section class="page" id="page-profile">
-        <div class="page-heading"><div><p class="eyebrow">YOUR ACCOUNT</p><h1>My Profile</h1></div></div>
-        <article class="panel">
-          <div class="field"><label>Full Name</label><input id="profileName" readonly></div>
-          <div class="field"><label>Email Address</label><input id="profileEmail" readonly></div>
-        </article>
-      </section>
-
-      <section class="page" id="page-settings">
-        <div class="page-heading"><div><p class="eyebrow">PREFERENCES</p><h1>Settings</h1></div></div>
-        <article class="panel">
-          <h2>Notification Preferences</h2>
-          <div class="list-row"><span>Email notifications</span><span class="status">Setup pending</span></div>
-          <div class="list-row"><span>SMS notifications</span><span class="status">Setup pending</span></div>
-          <div class="list-row"><sp<div class="list-row">
-  <span>Push notifications</span>
-  <span class="status">Setup pending</span>
+  </main>
 </div>
+  </div>
+<!-- PART 3: REMAINING CUSTOMER PAGES -->
 
-<div class="divider"></div>
-
-<h2>Account Security</h2>
-<div class="list-row">
-  <span>Password and login security</span>
-  <span class="status">Protected by Supabase</span>
-</div>
-
-<div class="list-row">
-  <span>Withdrawal verification</span>
-  <span class="status">Verification required</span>
-</div>
-
-<div class="divider"></div>
-
-<h2>Account Actions</h2>
-<button class="btn btn-secondary" id="logoutSettingsBtn" type="button">
-  Log Out
-</button>
-</article>
+<section id="page-transactions" class="page">
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">ACCOUNT RECORDS</div>
+      <h1>Transaction History</h1>
+      <p class="muted">Review your deposits, withdrawals and account activity.</p>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>All Transactions</h2>
+    <div id="transactionHistory" class="empty">Your transaction records will appear here.</div>
+  </div>
 </section>
 
-</main>
-</div>
-</div>
+<section id="page-notifications" class="page">
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">STAY INFORMED</div>
+      <h1>Notifications</h1>
+      <p class="muted">All your account updates in one place.</p>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Notification History</h2>
+    <div id="notificationHistory" class="empty">Your notifications will appear here.</div>
+  </div>
+</section>
 
+<section id="page-profile" class="page">
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">YOUR ACCOUNT</div>
+      <h1>My Profile</h1>
+      <p class="muted">View and manage your personal information.</p>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Personal Information</h2>
+    <div class="field">
+      <label for="profileName">Full Name</label>
+      <input id="profileName" type="text" placeholder="Your full name">
+    </div>
+    <div class="field">
+      <label for="profileEmail">Email Address</label>
+      <input id="profileEmail" type="email" disabled>
+    </div>
+    <div class="field">
+      <label for="profilePhone">Phone Number</label>
+      <input id="profilePhone" type="tel" placeholder="Your phone number">
+    </div>
+    <button id="saveProfileButton" class="btn" type="button">Save Profile</button>
+    <p id="profileMessage" class="muted" role="status"></p>
+  </div>
+  <div class="panel">
+    <h2>Account Information</h2>
+    <div class="list-row"><span>Account status</span><span class="status">Check account</span></div>
+    <div class="list-row"><span>Registered email</span><span id="profileEmailDisplay">Not loaded</span></div>
+  </div>
+</section>
+
+<section id="page-settings" class="page">
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">PREFERENCES & SECURITY</div>
+      <h1>Settings</h1>
+      <p class="muted">Manage your account preferences and security.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Notification Preferences</h2>
+    <div class="list-row">
+      <span>Email notifications</span>
+      <input id="emailNotifications" type="checkbox" checked>
+    </div>
+    <div class="list-row">
+      <span>SMS notifications</span>
+      <span class="status">Setup pending</span>
+    </div>
+    <div class="list-row">
+      <span>Push notifications</span>
+      <span class="status">Setup pending</span>
+    </div>
+    <div class="field">
+      <label for="notificationTone">Notification Tone</label>
+      <select id="notificationTone">
+        <option value="default">Default</option>
+        <option value="soft">Soft</option>
+        <option value="classic">Classic</option>
+        <option value="silent">Silent</option>
+      </select>
+    </div>
+    <button id="saveNotificationSettings" class="btn" type="button">Save Preferences</button>
+  </div>
+
+  <div class="panel">
+    <h2>Account Security</h2>
+    <div class="list-row"><span>Password and login security</span><span class="status">Protected by Supabase</span></div>
+    <div class="list-row"><span>Withdrawal verification</span><span class="status">Verification required</span></div>
+    <div class="list-row"><span>Biometric verification</span><span class="status">Device support required</span></div>
+  </div>
+
+  <div class="panel">
+    <h2>Account Actions</h2>
+    <p class="muted">Always protect your login details. Never share your password or verification codes.</p>
+    <button id="settingsLogoutButton" class="btn btn-outline" type="button">Log Out</button>
+  </div>
+</section>
+
+<section id="page-support" class="page">
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">WE ARE HERE TO HELP</div>
+      <h1>Support Centre</h1>
+      <p class="muted">Contact the VESTORA support team.</p>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Submit a Support Request</h2>
+    <div class="field">
+      <label for="supportSubject">Subject</label>
+      <input id="supportSubject" type="text" placeholder="What do you need help with?">
+    </div>
+    <div class="field">
+      <label for="supportMessage">Message</label>
+      <textarea id="supportMessage" rows="5" style="width:100%;padding:12px;background:#080b09;border:1px solid #30442d;border-radius:8px;color:white" placeholder="Describe your issue"></textarea>
+    </div>
+    <button id="supportSubmitButton" class="btn" type="button">Submit Request</button>
+    <p id="supportStatus" class="muted" role="status"></p>
+  </div>
+  <div class="panel">
+    <h2>My Support Tickets</h2>
+    <div id="supportTickets" class="empty">Your support requests will appear here.</div>
+  </div>
+</section>
+
+<footer>
+  <strong>VESTORA</strong> · INVEST · GROW · PROSPER
+  <p>Manage your account responsibly. Investment products involve risk.</p>
+</footer>
+
+<!-- End of customer page content. Part 4 will close the HTML document. -->
+ 
 <script>
+/* VESTORA SUPABASE CONNECTION */
+
 const SUPABASE_URL = "https://rqdqfjcjakkbjnzhklas.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Kytlo-JZc6qRwf4A98N86g_0-e91XYW";
 
-let supabaseClient = null;
-
-function showMessage(element, message) {
-  if (element) element.textContent = message;
-}
-
-function showPage(pageName) {
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.remove("active");
-  });
-
-  const selectedPage = document.getElementById("page-" + pageName);
-  if (selectedPage) selectedPage.classList.add("active");
-
-  document.querySelectorAll("[data-page]").forEach(link => {
-    link.classList.toggle(
-      "active",
-      link.dataset.page === pageName
-    );
-  });
-}
-
-async function startApp() {
-  if (!window.supabase) {
-    console.error("Supabase library did not load.");
-    return;
-  }
-
-  supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-  const { data, error } = await supabaseClient.auth.getSession();
-
-  if (error) {
-    console.error(error.message);
-    return;
-  }
-
-  if (data.session) {
-    showDashboard(data.session.user);
-  } else {
-    showAuth();
-  }
-}
-
-function showAuth() {
-  const auth = document.getElementById("authScreen");
-  const dashboard = document.getElementById("dashboardScreen");
-
-  if (auth) auth.style.display = "block";
-  if (dashboard) dashboard.style.display = "none";
-}
-
-function showDashboard(user) {
-  const auth = document.getElementById("authScreen");
-  const dashboard = document.getElementById("dashboardScreen");
-
-  if (auth) auth.style.display = "none";
-  if (dashboard) dashboard.style.display = "block";
-
-  const email = user.email || "";
-  const name =
-    user.user_metadata?.full_name ||
-    email.split("@")[0] ||
-    "Investor";
-
-  const profileName = document.getElementById("profileName");
-  const profileEmail = document.getElementById("profileEmail");
-
-  if (profileName) profileName.value = name;
-  if (profileEmail) profileEmail.value = email;
-
-  const welcome = document.getElementById("welcomeName");
-  if (welcome) welcome.textContent = name;
-
-  showPage("dashboard");
-}
-
-document.querySelectorAll("[data-page]").forEach(link => {
-  link.addEventListener("click", event => {
-    event.preventDefault();
-    showPage(link.dataset.page);
-  });
-});
-
-const logoutButtons = [
-  document.getElementById("logoutBtn"),
-  document.getElementById("logoutSettingsBtn")
-];
-
-logoutButtons.forEach(button => {
-  if (button) {
-    button.addEventListener("click", async () => {
-      if (!supabaseClient) return;
-
-      const { error } = await supabaseClient.auth.signOut();
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      showAuth();
-    });
-  }
-});
-
-if (window.supabase) {
-  startApp();
-} else {
-  window.addEventListener("load", startApp);
-}
-</script>
-
-</body>
-</html><div class="list-row">
-  <span>Push notifications</span>
-  <span class="status">Setup pending</span>
-</div>
-
-<div class="divider"></div>
-
-<h2>Account Security</h2>
-
-<div class="list-row">
-  <span>Password and login security</span>
-  <span class="status">Protected by Supabase</span>
-</div>
-
-<div class="list-row">
-  <span>Withdrawal verification</span>
-  <span class="status">Verification required</span>
-</div>
-
-<div class="divider"></div>
-
-<h2>Account Actions</h2>
-
-<button class="btn btn-outline" id="logoutSettingsBtn" type="button">
-  Log Out
-</button>
-</article>
-</section><script>
-const SUPABASE_URL = "https://rqdqfjcjakkbjnzhklas.supabase.co";
-const SUPABASE_KEY = "sb_publishable_Kytlo-JZc6qRwf4A98N86g_0-e91XYW";
-
-let supabaseClient;
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 const authScreen = document.getElementById("authScreen");
-const dashboardScreen = document.getElementById("dashboardScreen");
+const customerApp = document.getElementById("customerApp");
 const authMessage = document.getElementById("authMessage");
 
-function message(text) {
-  authMessage.textContent = text;
-}
+let currentUser = null;
 
-function showAuth() {
+/* SHOW LOGIN OR REGISTER */
+
+function showAuth(message = "") {
   authScreen.hidden = false;
-  dashboardScreen.hidden = true;
+  customerApp.hidden = true;
+  authMessage.textContent = message;
 }
 
 function showDashboard(user) {
+  if (!user) {
+    showAuth();
+    return;
+  }
+
+  currentUser = user;
   authScreen.hidden = true;
-  dashboardScreen.hidden = false;
+  customerApp.hidden = false;
 
-  const email = user.email || "";
-  const name =
-    user.user_metadata?.full_name ||
-    email.split("@")[0] ||
-    "Investor";
+  const metadata = user.user_metadata || {};
+  const fullName = metadata.full_name || user.email || "Investor";
+  const firstName = fullName.split(" ")[0];
 
-  document.getElementById("profileName").value = name;
-  document.getElementById("profileEmail").value = email;
-  document.getElementById("welcomeName").textContent = name;
-  document.getElementById("customerName").textContent = name;
-  document.getElementById("avatarInitial").textContent =
-    name.charAt(0).toUpperCase();
+  document.getElementById("customerName").textContent = fullName;
+  document.getElementById("welcomeName").textContent = firstName;
+  document.getElementById("userAvatar").textContent =
+    firstName.charAt(0).toUpperCase();
 
-  showPage("dashboard");
+  document.getElementById("profileName").value =
+    metadata.full_name || "";
+
+  document.getElementById("profileEmail").value =
+    user.email || "";
+
+  document.getElementById("profileEmailDisplay").textContent =
+    user.email || "Not available";
 }
 
-function showPage(name) {
-  document.querySelectorAll(".page").forEach(page => {
+/* SWITCH AUTH FORMS */
+
+function showLoginForm() {
+  document.getElementById("loginForm").hidden = false;
+  document.getElementById("registerForm").hidden = true;
+  document.getElementById("loginTab").classList.add("active");
+  document.getElementById("registerTab").classList.remove("active");
+  authMessage.textContent = "";
+}
+
+function showRegisterForm() {
+  document.getElementById("loginForm").hidden = true;
+  document.getElementById("registerForm").hidden = false;
+  document.getElementById("loginTab").classList.remove("active");
+  document.getElementById("registerTab").classList.add("active");
+  authMessage.textContent = "";
+}
+
+document.getElementById("loginTab").addEventListener("click", showLoginForm);
+document.getElementById("registerTab").addEventListener("click", showRegisterForm);
+document.getElementById("showRegister").addEventListener("click", showRegisterForm);
+document.getElementById("showLogin").addEventListener("click", showLoginForm);
+
+/* BUTTON LOADING STATE */
+
+function setBusy(form, busy, text) {
+  const button = form.querySelector('button[type="submit"]');
+
+  if (busy) {
+    button.dataset.originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = text;
+  } else {
+    button.disabled = false;
+    button.textContent = button.dataset.originalText || text;
+  }
+}
+
+/* LOGIN */
+
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const form = this;
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  setBusy(form, true, "Signing in...");
+  authMessage.textContent = "Checking your account...";
+
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) throw error;
+
+    if (data.user) {
+      showDashboard(data.user);
+      form.reset();
+    }
+  } catch (error) {
+    authMessage.textContent = error.message || "Login failed. Please try again.";
+  } finally {
+    setBusy(form, false, "Sign In");
+  }
+});
+
+/* REGISTRATION */
+
+document.getElementById("registerForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const form = this;
+  const fullName = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("registerEmail").value.trim();
+  const password = document.getElementById("registerPassword").value;
+
+  if (password.length < 8) {
+    authMessage.textContent = "Your password must contain at least 8 characters.";
+    return;
+  }
+
+  setBusy(form, true, "Creating account...");
+  authMessage.textContent = "Creating your VESTORA account...";
+
+  try {
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          full_name: fullName
+        },
+        emailRedirectTo: window.location.origin + window.location.pathname
+      }
+    });
+
+    if (error) throw error;
+
+    if (data.session && data.user) {
+      showDashboard(data.user);
+      form.reset();
+    } else {
+      authMessage.textContent =
+        "Registration received. Please check your email for the confirmation link, then return here to log in.";
+      showLoginForm();
+    }
+  } catch (error) {
+    authMessage.textContent =
+      error.message || "Registration failed. Please try again.";
+  } finally {
+    setBusy(form, false, "Create Account");
+  }
+});
+
+/* DASHBOARD NAVIGATION */
+
+function openPage(pageName) {
+  const target = document.getElementById("page-" + pageName);
+
+  if (!target) return;
+
+  document.querySelectorAll(".page").forEach(function(page) {
     page.classList.remove("active");
   });
 
-  const page = document.getElementById("page-" + name);
+  target.classList.add("active");
 
-  if (page) page.classList.add("active");
-
-  document.querySelectorAll("[data-page]").forEach(link => {
-    link.classList.toggle("active", link.dataset.page === name);
+  document.querySelectorAll(".nav-link").forEach(function(link) {
+    link.classList.toggle("active", link.dataset.page === pageName);
   });
 
   document.getElementById("sidebar").classList.remove("open");
+  window.scrollTo(0, 0);
 }
 
-function switchAuth(mode) {
-  const login = mode === "login";
-
-  document.getElementById("loginForm").hidden = !login;
-  document.getElementById("registerForm").hidden = login;
-
-  document.getElementById("loginTab").classList.toggle("active", login);
-  document.getElementById("registerTab").classList.toggle("active", !login);
-
-  message("");
-}
-
-document.getElementById("loginTab").addEventListener("click", () => {
-  switchAuth("login");
+document.querySelectorAll("[data-page]").forEach(function(link) {
+  link.addEventListener("click", function(event) {
+    event.preventDefault();
+    openPage(this.dataset.page);
+  });
 });
 
-document.getElementById("registerTab").addEventListener("click", () => {
-  switchAuth("register");
+/* MOBILE MENU */
+
+document.getElementById("menuButton").addEventListener("click", function() {
+  document.getElementById("sidebar").classList.toggle("open");
 });
 
-document.getElementById("showRegister").addEventListener("click", () => {
-  switchAuth("register");
-});
+/* LOGOUT */
 
-document.getElementById("showLogin").addEventListener("click", () => {
-  switchAuth("login");
-});
+async function logoutUser() {
+  const buttons = [
+    document.getElementById("logoutButton"),
+    document.getElementById("settingsLogoutButton")
+  ];
 
-document.getElementById("loginForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const button = event.currentTarget.querySelector("button[type=submit]");
-  button.disabled = true;
-  button.textContent = "Signing in...";
+  buttons.forEach(function(button) {
+    button.disabled = true;
+    button.textContent = "Logging out...";
+  });
 
   try {
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
-
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
-
-    if (error) throw error;
-
-    if (data.session) {
-      showDashboard(data.user);
-    }
-  } catch (error) {
-    message(error.message);
-  } finally {
-    button.disabled = false;
-    button.textContent = "Sign In";
-  }
-});
-
-document.getElementById("registerForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const button = event.currentTarget.querySelector("button[type=submit]");
-  button.disabled = true;
-  button.textContent = "Creating account...";
-
-  try {
-    const fullName = document.getElementById("fullName").value.trim();
-    const email = document.getElementById("registerEmail").value.trim();
-    const password = document.getElementById("registerPassword").value;
-
-    const { data, error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName },
-        emailRedirectTo: window.location.origin + "/Vestora/"
-      }
+    const { error } = await supabaseClient.auth.signOut({
+      scope: "local"
     });
 
     if (error) throw error;
 
-    if (data.session) {
-      showDashboard(data.user);
-    } else {
-      message("Registration received. Please check your email for the confirmation link before signing in.");
-      switchAuth("login");
-    }
+    currentUser = null;
+    showAuth("You have been logged out successfully.");
+    showLoginForm();
+
   } catch (error) {
-    message(error.message);
+    alert("Logout failed: " + error.message);
   } finally {
-    button.disabled = false;
-    button.textContent = "Create Account";
+    buttons.forEach(function(button) {
+      button.disabled = false;
+      button.textContent = "Log Out";
+    });
   }
-});
-
-document.querySelectorAll("[data-page]").forEach(link => {
-  link.addEventListener("click", event => {
-    event.preventDefault();
-    showPage(link.dataset.page);
-  });
-});
-
-document.getElementById("menuBtn").addEventListener("click", () => {
-  document.getElementById("sidebar").classList.toggle("open");
-});
-
-async function logout() {
-  const { error } = await supabaseClient.auth.signOut();
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
-  showAuth();
 }
 
-document.getElementById("logoutBtn").addEventListener("click", logout);
-document.getElementById("logoutSettingsBtn").addEventListener("click", logout);
+document.getElementById("logoutButton").addEventListener("click", logoutUser);
+document.getElementById("settingsLogoutButton").addEventListener("click", logoutUser);
+
+/* SESSION CHECK */
 
 async function startApp() {
-  if (!window.supabase) {
-    message("Unable to load the authentication service. Please refresh.");
-    return;
-  }
+  showAuth();
 
-  supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+  try {
+    const { data, error } = await supabaseClient.auth.getSession();
 
-  const { data, error } = await supabaseClient.auth.getSession();
+    if (error) throw error;
 
-  if (error) {
-    message(error.message);
-    showAuth();
-    return;
-  }
-
-  if (data.session) {
-    showDashboard(data.session.user);
-  } else {
-    showAuth();
-  }
-
-  supabaseClient.auth.onAuthStateChange((event, session) => {
-    if (event === "SIGNED_IN" && session) {
-      showDashboard(session.user);
-    }
-
-    if (event === "SIGNED_OUT") {
+    if (data.session && data.session.user) {
+      showDashboard(data.session.user);
+    } else {
       showAuth();
     }
-  });
+  } catch (error) {
+    showAuth("Unable to check your session. Please refresh and try again.");
+  }
 }
 
+/* KEEP SCREEN IN SYNC WITH AUTHENTICATION */
+
+supabaseClient.auth.onAuthStateChange(function(event, session) {
+  if (session && session.user) {
+    showDashboard(session.user);
+  } else {
+    currentUser = null;
+    showAuth();
+  }
+});
+
+/* START VESTORA */
+
 startApp();
-        </script>
+</script>
+
+</body>
+</html>
+
+            

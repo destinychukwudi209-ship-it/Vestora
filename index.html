@@ -274,7 +274,7 @@
           <span>✓</span><b>Tasks</b><small>Daily activities</small>
         </a>
         <a href="#affiliate" class="action-card">
-          <span>♧</span><b>Affiliate</b><small>Referral programme</small>
+          <span>♧</span><b>Affiliate</b><small>Referral rewards</small>
         </a>
       </section>
 
@@ -330,6 +330,9 @@
       "https://rqdqfjcjakkbjnzhklas.supabase.co",
       "sb_publishable_Kytlo-JZc6qRwf4A98N86g_0-e91XYW"
     );
+
+    const VESTORA_URL =
+      "https://destinychukwudi209-ship-it.github.io/Vestora/";
 
     const authScreen = document.getElementById("authScreen");
     const dashboardScreen = document.getElementById("dashboardScreen");
@@ -402,6 +405,7 @@
         email,
         password,
         options: {
+          emailRedirectTo: VESTORA_URL,
           data: { full_name: fullName }
         }
       });
@@ -417,7 +421,7 @@
       }
 
       message(
-        "Account created. Please check your email for a confirmation link before logging in."
+        "Account created. Please check your email for your VESTORA confirmation link. If you have already registered, use Login."
       );
     });
 
@@ -504,5 +508,5 @@
   </script>
 
 </body>
-  </html>
-            
+                                    </html>
+                                                

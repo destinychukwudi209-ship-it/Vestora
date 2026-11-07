@@ -504,18 +504,211 @@ main{padding:22px 4%}
     <h2>Account Actions</h2>
     <p class="muted">Always protect your login details. Never share your password or verification codes.</p>
     <button id="settingsLogoutButton" class="btn btn-outline" type="button">Log Out</button>
-  </div>
-</section>
+  <section id="page-settings" class="page">
 
-<section id="page-support" class="page">
   <div class="page-heading">
     <div>
-      <div class="eyebrow">WE ARE HERE TO HELP</div>
-      <h1>Support Centre</h1>
-      <p class="muted">Contact the VESTORA support team.</p>
+      <div class="eyebrow">PERSONAL CONTROL CENTRE</div>
+      <h1>Settings Centre</h1>
+      <p class="muted">Manage your VESTORA account, preferences and security.</p>
     </div>
   </div>
+
+  <!-- PROFILE PREFERENCES -->
   <div class="panel">
+    <h2>👤 Profile Preferences</h2>
+    <p class="muted">Manage your personal account information.</p>
+
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="settingsFullName" placeholder="Your full name">
+    </div>
+
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="settingsEmail" disabled>
+    </div>
+
+    <div class="field">
+      <label>Phone Number</label>
+      <input type="tel" id="settingsPhone" placeholder="Your phone number">
+    </div>
+
+    <span class="status">Profile editing connection pending</span>
+  </div>
+
+  <!-- NOTIFICATION SETTINGS -->
+  <div class="panel">
+    <h2>🔔 Notification Settings</h2>
+    <p class="muted">Choose which account notifications you want to receive.</p>
+
+    <div class="list-row">
+      <span>Email Notifications</span>
+      <input type="checkbox" id="settingEmailNotifications" checked>
+    </div>
+
+    <div class="list-row">
+      <span>Deposit Notifications</span>
+      <input type="checkbox" id="settingDepositNotifications" checked>
+    </div>
+
+    <div class="list-row">
+      <span>Withdrawal Notifications</span>
+      <input type="checkbox" id="settingWithdrawalNotifications" checked>
+    </div>
+
+    <div class="list-row">
+      <span>Investment Notifications</span>
+      <input type="checkbox" id="settingInvestmentNotifications" checked>
+    </div>
+
+    <div class="list-row">
+      <span>Task and Affiliate Notifications</span>
+      <input type="checkbox" id="settingEarningsNotifications" checked>
+    </div>
+
+    <div class="list-row">
+      <span>Announcement Notifications</span>
+      <input type="checkbox" id="settingAnnouncementNotifications" checked>
+    </div>
+
+    <div class="list-row">
+      <span>Security Alerts</span>
+      <input type="checkbox" id="settingSecurityNotifications" checked>
+    </div>
+
+    <div class="list-row">
+      <span>SMS Notifications</span>
+      <span class="status">Setup pending</span>
+    </div>
+
+    <div class="list-row">
+      <span>Push Notifications</span>
+      <span class="status">Setup pending</span>
+    </div>
+
+    <div class="field">
+      <label for="settingNotificationTone">Notification Tone</label>
+      <select id="settingNotificationTone">
+        <option value="default">Default</option>
+        <option value="soft">Soft</option>
+        <option value="classic">Classic</option>
+        <option value="silent">Silent</option>
+      </select>
+    </div>
+
+    <span class="status">Preference saving connection pending</span>
+  </div>
+
+  <!-- PASSWORD AND LOGIN SECURITY -->
+  <div class="panel">
+    <h2>🔐 Password & Login Security</h2>
+    <p class="muted">Protect access to your VESTORA account.</p>
+
+    <div class="list-row">
+      <span>Account Authentication</span>
+      <span class="status">Protected by Supabase</span>
+    </div>
+
+    <div class="list-row">
+      <span>Password Change</span>
+      <span class="status">Setup pending</span>
+    </div>
+
+    <div class="list-row">
+      <span>Two-Factor Authentication</span>
+      <span class="status">Setup pending</span>
+    </div>
+
+    <div class="list-row">
+      <span>Login Activity</span>
+      <span class="status">Setup pending</span>
+    </div>
+
+    <div class="list-row">
+      <span>Device Management</span>
+      <span class="status">Setup pending</span>
+    </div>
+  </div>
+
+  <!-- WITHDRAWAL SECURITY -->
+  <div class="panel">
+    <h2>🛡️ Withdrawal Security</h2>
+    <p class="muted">Extra verification before withdrawal requests.</p>
+
+    <div class="list-row">
+      <span>Password Verification</span>
+      <span class="status">Required before activation</span>
+    </div>
+
+    <div class="list-row">
+      <span>Fingerprint Verification</span>
+      <span class="status">Device support required</span>
+    </div>
+
+    <div class="list-row">
+      <span>Withdrawal Security Alerts</span>
+      <span class="status">Setup pending</span>
+    </div>
+  </div>
+
+  <!-- PRIVACY -->
+  <div class="panel">
+    <h2>🔒 Privacy & Data</h2>
+    <p class="muted">Manage your account privacy and information.</p>
+
+    <div class="list-row">
+      <span>Personal Data Protection</span>
+      <span class="status">Protected account data</span>
+    </div>
+
+    <div class="list-row">
+      <span>Privacy Policy</span>
+      <span class="status">Available soon</span>
+    </div>
+
+    <div class="list-row">
+      <span>Terms & Conditions</span>
+      <span class="status">Available soon</span>
+    </div>
+  </div>
+
+  <!-- DISPLAY -->
+  <div class="panel">
+    <h2>🎨 Display & Language</h2>
+
+    <div class="field">
+      <label for="settingLanguage">Language</label>
+      <select id="settingLanguage">
+        <option value="en">English</option>
+      </select>
+    </div>
+
+    <div class="list-row">
+      <span>Appearance</span>
+      <span class="status">Dark Theme</span>
+    </div>
+  </div>
+
+  <!-- ACCOUNT MANAGEMENT -->
+  <div class="panel">
+    <h2>⚙️ Account Management</h2>
+    <p class="muted">Manage your VESTORA account access.</p>
+
+    <div class="list-row">
+      <span>Account Status</span>
+      <span class="status">Active session</span>
+    </div>
+
+    <button
+      id="settingsLogoutButton"
+      class="btn btn-outline"
+      type="button">
+      Log Out
+    </button>
+  </div>
+
+  </section>
     <h2>Submit a Support Request</h2>
     <div class="field">
       <label for="supportSubject">Subject</label>

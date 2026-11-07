@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -119,7 +120,7 @@
 
 <body>
 
-  <!-- AUTHENTICATION SCREEN -->
+  <!-- AUTHENTICATION -->
   <section id="authScreen" class="auth-wrap">
     <div class="auth-logo">VEST<span>ORA</span></div>
     <p class="auth-subtitle">INVEST · GROW · PROSPER</p>
@@ -133,15 +134,17 @@
       <h2>Welcome Back</h2>
       <p class="auth-subtitle">Sign in to your VESTORA account.</p>
 
-      <label for="loginPhone">Phone Number</label>
-      <input id="loginPhone" type="tel" placeholder="+2348012345678"
-        autocomplete="tel" required>
+      <label for="loginEmail">Email Address</label>
+      <input id="loginEmail" type="email"
+        placeholder="you@example.com"
+        autocomplete="email" required>
 
       <label for="loginPassword">Password</label>
       <input id="loginPassword" type="password"
         autocomplete="current-password" required>
 
       <button class="auth-submit" type="submit">Login</button>
+
       <p class="auth-switch">
         New to VESTORA?
         <button type="button" id="showRegister">Create an account</button>
@@ -153,37 +156,29 @@
       <p class="auth-subtitle">Join VESTORA today.</p>
 
       <label for="fullName">Full Name</label>
-      <input id="fullName" type="text" placeholder="Your full name"
+      <input id="fullName" type="text"
+        placeholder="Your full name"
         autocomplete="name" required>
 
-      <label for="registerPhone">Phone Number</label>
-      <input id="registerPhone" type="tel" placeholder="+2348012345678"
-        autocomplete="tel" required>
+      <label for="registerEmail">Email Address</label>
+      <input id="registerEmail" type="email"
+        placeholder="you@example.com"
+        autocomplete="email" required>
 
       <label for="registerPassword">Create Password</label>
       <input id="registerPassword" type="password"
         placeholder="At least 8 characters"
-        autocomplete="new-password" minlength="8" required>
+        autocomplete="new-password"
+        minlength="8" required>
 
-      <button class="auth-submit" type="submit">Create Account</button>
+      <button class="auth-submit" type="submit">
+        Create Account
+      </button>
 
       <p class="auth-switch">
         Already registered?
         <button type="button" id="showLogin">Login</button>
       </p>
-    </form>
-
-    <form id="otpForm" class="auth-form" hidden>
-      <h2>Verify Your Phone</h2>
-      <p class="auth-subtitle">
-        Enter the six-digit code sent to your phone.
-      </p>
-
-      <label for="otpCode">Verification Code</label>
-      <input id="otpCode" type="text" inputmode="numeric"
-        maxlength="6" placeholder="000000" required>
-
-      <button class="auth-submit" type="submit">Verify Account</button>
     </form>
 
     <p id="authMessage" class="auth-message" role="status"></p>
@@ -194,6 +189,7 @@
 
     <header class="topbar">
       <a href="#" class="logo">VEST<span>ORA</span></a>
+
       <button class="menu-btn" id="menuBtn"
         aria-label="Toggle menu">☰</button>
 
@@ -339,10 +335,7 @@
     const dashboardScreen = document.getElementById("dashboardScreen");
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
-    const otpForm = document.getElementById("otpForm");
     const authMessage = document.getElementById("authMessage");
-
-    let pendingPhone = "";
 
     function message(text) {
       authMessage.textContent = text;
@@ -351,11 +344,11 @@
     function showForm(form) {
       loginForm.hidden = form !== "login";
       registerForm.hidden = form !== "register";
-      otpForm.hidden = form !== "otp";
 
       document.getElementById("loginTab").classList.toggle(
         "active", form === "login"
       );
+
       document.getElementById("registerTab").classList.toggle(
         "active", form === "register"
       );
@@ -368,8 +361,9 @@
       dashboardScreen.hidden = false;
 
       const name = user.user_metadata?.full_name;
+
       document.getElementById("customerName").textContent =
-        name || user.phone || "My Account";
+        name || user.email || "My Account";
     }
 
     function showAuthentication() {
@@ -393,19 +387,19 @@
     registerForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      const fullName = document.getElementById("fullName").value.trim();
-      const phone = document.getElementById("registerPhone").value.trim();
-      const password = document.getElementById("registerPassword").value;
+      const fullName =
+        document.getElementById("fullName").value.trim();
 
-      if (!phone.startsWith("+")) {
-        message("Enter your phone number with country code, e.g. +2348012345678.");
-        return;
-      }
+      const email =
+        document.getElementById("registerEmail").value.trim();
 
-      message("Creating your account...");
+      const password =
+        document.getElementById("registerPassword").value;
+
+      message("Creating your VESTORA account...");
 
       const { data, error } = await supabaseClient.auth.signUp({
-        phone,
+        email,
         password,
         options: {
           data: { full_name: fullName }
@@ -417,54 +411,32 @@
         return;
       }
 
-      if (data.session) {
+      if (data.session && data.user) {
         showDashboard(data.user);
         return;
       }
 
-      pendingPhone = phone;
-      showForm("otp");
-      message("Your account was created. SMS verification must be configured to receive your code.");
-    });
-
-    otpForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const token = document.getElementById("otpCode").value.trim();
-
-      message("Verifying your code...");
-
-      const { data, error } = await supabaseClient.auth.verifyOtp({
-        phone: pendingPhone,
-        token,
-        type: "sms"
-      });
-
-      if (error) {
-        message(error.message);
-        return;
-      }
-
-      showDashboard(data.user);
+      message(
+        "Account created. Please check your email for a confirmation link before logging in."
+      );
     });
 
     loginForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      const phone = document.getElementById("loginPhone").value.trim();
-      const password = document.getElementById("loginPassword").value;
+      const email =
+        document.getElementById("loginEmail").value.trim();
 
-      if (!phone.startsWith("+")) {
-        message("Enter your phone number with country code, e.g. +2348012345678.");
-        return;
-      }
+      const password =
+        document.getElementById("loginPassword").value;
 
       message("Signing you in...");
 
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        phone,
-        password
-      });
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
 
       if (error) {
         message(error.message);
@@ -474,27 +446,31 @@
       showDashboard(data.user);
     });
 
-    document.getElementById("logoutBtn").onclick = async () => {
-      const { error } = await supabaseClient.auth.signOut();
+    document.getElementById("logoutBtn").onclick =
+      async () => {
+        const { error } = await supabaseClient.auth.signOut();
 
-      if (error) {
-        alert(error.message);
-        return;
-      }
+        if (error) {
+          alert(error.message);
+          return;
+        }
 
-      showAuthentication();
-    };
-
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        showDashboard(session.user);
-      } else {
         showAuthentication();
+      };
+
+    supabaseClient.auth.onAuthStateChange(
+      (event, session) => {
+        if (session?.user) {
+          showDashboard(session.user);
+        } else {
+          showAuthentication();
+        }
       }
-    });
+    );
 
     async function startApp() {
-      const { data, error } = await supabaseClient.auth.getSession();
+      const { data, error } =
+        await supabaseClient.auth.getSession();
 
       if (error) {
         message(error.message);
@@ -528,4 +504,5 @@
   </script>
 
 </body>
-                               </html>
+  </html>
+            

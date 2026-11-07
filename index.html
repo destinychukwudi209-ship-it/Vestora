@@ -1,168 +1,437 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b09">
 <title>VESTORA | Invest · Grow · Prosper</title>
+
 <style>
 :root {
   --bg: #080b09;
   --surface: #101612;
+  --surface2: #151e18;
   --lime: #b7ff38;
   --text: #f4f7f2;
   --muted: #929b91;
+  --border: #29362b;
 }
+
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
+  padding: 20px;
   background: var(--bg);
   color: var(--text);
   font-family: Arial, sans-serif;
 }
-</style>
-</head>
-<body>
 
-<div id="app">
-  <h1>VESTORA</h1>
-  <p>Invest · Grow · Prosper</p>
-</div>
+.container {
+  max-width: 850px;
+  margin: auto;
+}
 
-</body>
-</html><div id="app">
-  <h1>WELCOME TO VESTORA</h1>
-  <p>Build Your Future. Grow With Purpose.</p>
+header {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
 
-  <div id="auth">
-    <input id="email" type="email" placeholder="Email address">
-    <input id="password" type="password" placeholder="Password">
+.logo {
+  color: var(--lime);
+  font-size: 27px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
 
-    <button id="register">Create Account</button>
-    <button id="login">Login</button>
+.subtitle {
+  color: var(--muted);
+  margin-top: 6px;
+}
 
-    <p id="message"></p>
-  </div>
-</div><script>
-const message = document.getElementById("message");
-
-document.getElementById("register").onclick = function() {
-  message.textContent = "Registration setup pending.";
-};
-
-document.getElementById("login").onclick = function() {
-  message.textContent = "Login setup pending.";
-};
-</script><section id="plans">
-  <h2>VESTORA Investment Plans</h2>
-
-  <div class="plan">
-    <h3>Tier 1</h3>
-    <p>Simulated Capital: ₦1,500</p>
-    <p>Duration: 30 Days</p>
-    <p>Illustrative Projected Value: ₦12,000</p>
-    <p>Daily Task Reward: ₦400</p>
-    <button>Activate ₦1,500</button>
-  </div>
-</section><section id="profile">
-  <h2>My Profile</h2>
-  <input id="fullName" placeholder="Full name">
-  <input id="phone" placeholder="Phone number">
-  <p>Account Status: Active</p>
-  <button>Save Profile</button>
-</section><section id="deposit-proof">
-  <h2>Upload Deposit Proof</h2>
-  <input
-    type="file"
-    id="depositImage"
-    accept="image/*"
-  >
-  <p>Select a payment screenshot from your gallery.</p>
-  <button id="uploadProof">Upload Proof</button>
-</section><section id="admin-users">
-  <h2>Manage Users</h2>
-  <input id="userEmail" type="email"
-    placeholder="Enter user's email">
-
-  <button id="suspendUser">
-    Suspend Account
-  </button>
-
-  <button id="activateUser">
-    Reactivate Account
-  </button>
-</section><div class="plan">
-  <h3>Popular</h3>
-  <p>Capital: ₦3,000</p>
-  <p>Duration: 30 Days</p>
-  <p>Illustrative Value: ₦18,000</p>
-  <p>Daily Simulated Reward: ₦600</p>
-  <button>Activate ₦3,000</button>
-</div>
-
-<div class="plan">
-  <h3>Tier 3</h3>
-  <p>Capital: ₦6,000</p>
-  <p>Duration: 30 Days</p>
-  <p>Illustrative Value: ₦27,000</p>
-  <p>Daily Simulated Reward: ₦900</p>
-  <button>Activate ₦6,000</button>
-</div>
-
-<div class="plan">
-  <h3>Tier 4</h3>
-  <p>Capital: ₦9,000</p>
-  <p>Duration: 30 Days</p>
-  <p>Illustrative Value: ₦39,000</p>
-  <p>Daily Simulated Reward: ₦1,300</p>
-  <button>Activate ₦9,000</button>
-</div>
-
-<div class="plan">
-  <h3>Premier</h3>
-  <p>Capital: ₦12,000</p>
-  <p>Duration: 30 Days</p>
-  <p>Illustrative Value: ₦51,000</p>
-  <p>Daily Simulated Reward: ₦1,700</p>
-  <button>Activate ₦12,000</button>section {
-  background: #101612;
-  padding: 18px;
-  margin: 18px 0;
+section {
+  background: var(--surface);
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid var(--border);
   border-radius: 14px;
 }
 
-.plan {
-  background: #151e18;
-  padding: 16px;
-  margin: 14px 0;
-  border: 1px solid #34432d;
-  border-radius: 12px;
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 27px;
+}
+
+h2 {
+  color: var(--lime);
+}
+
+p {
+  line-height: 1.6;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  background: var(--surface2);
+  color: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
 }
 
 button {
-  background: #b7ff38;
+  background: var(--lime);
   color: #080b09;
-  padding: 12px;
+  padding: 13px 17px;
+  margin: 5px 5px 5px 0;
   border: none;
   border-radius: 8px;
   font-weight: bold;
+  cursor: pointer;
 }
-</div><section id="withdrawal-times">
+
+button.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.plan {
+  background: var(--surface2);
+  padding: 18px;
+  margin: 15px 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.plan h3 {
+  color: var(--lime);
+}
+
+.plan p {
+  margin: 8px 0;
+}
+
+.tag {
+  display: inline-block;
+  color: var(--lime);
+  border: 1px solid var(--lime);
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.notice {
+  color: var(--muted);
+  font-size: 13px;
+  border-left: 3px solid var(--lime);
+  padding-left: 12px;
+}
+
+#preview {
+  max-width: 100%;
+  max-height: 250px;
+  display: none;
+  margin-top: 15px;
+  border-radius: 10px;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 25px 0;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">VESTORA</div>
+  <div class="subtitle">Invest · Grow · Prosper</div>
+</header>
+
+<section id="auth">
+  <h1>WELCOME TO VESTORA</h1>
+  <p class="muted">Build Your Future. Grow With Purpose.</p>
+
+  <input id="email" type="email"
+    placeholder="Email address">
+
+  <input id="password" type="password"
+    placeholder="Password">
+
+  <button onclick="authNotice('Registration')">
+    Create Account
+  </button>
+
+  <button class="secondary"
+    onclick="authNotice('Login')">
+    Login
+  </button>
+
+  <p id="authMessage" class="notice">
+    Secure account authentication requires backend connection.
+  </p>
+</section>
+
+<section id="plans">
+  <h2>Investment Plans</h2>
+  <p class="muted">Educational simulated plans</p>
+
+  <div class="plan">
+    <h3>Tier 1</h3>
+    <span class="tag">ENTRY LEVEL</span>
+    <p>Simulated Capital: ₦1,500</p>
+    <p>Duration: 30 Days</p>
+    <p>Illustrative Projected Value: ₦12,000</p>
+    <p>Daily Simulated Task Reward: ₦400</p>
+    <p>Task Reset Interval: 24 Hours</p>
+    <p>Unlocks Tier 1 Tasks</p>
+    <p>30th-Day Monthly Cycle</p>
+    <button onclick="planNotice('Tier 1')">
+      Activate ₦1,500
+    </button>
+  </div>
+
+  <div class="plan">
+    <h3>Popular</h3>
+    <span class="tag">MOST POPULAR</span>
+    <p>Simulated Capital: ₦3,000</p>
+    <p>Duration: 30 Days</p>
+    <p>Illustrative Projected Value: ₦18,000</p>
+    <p>Daily Simulated Task Reward: ₦600</p>
+    <p>Task Reset Interval: 24 Hours</p>
+    <p>Unlocks Popular Tasks</p>
+    <p>30th-Day Monthly Cycle</p>
+    <button onclick="planNotice('Popular')">
+      Activate ₦3,000
+    </button>
+  </div>
+
+  <div class="plan">
+    <h3>Tier 3</h3>
+    <p>Simulated Capital: ₦6,000</p>
+    <p>Duration: 30 Days</p>
+    <p>Illustrative Projected Value: ₦27,000</p>
+    <p>Daily Simulated Task Reward: ₦900</p>
+    <p>Task Reset Interval: 24 Hours</p>
+    <p>Unlocks Tier 3 Tasks</p>
+    <p>30th-Day Monthly Cycle</p>
+    <button onclick="planNotice('Tier 3')">
+      Activate ₦6,000
+    </button>
+  </div>
+
+  <div class="plan">
+    <h3>Tier 4</h3>
+    <p>Simulated Capital: ₦9,000</p>
+    <p>Duration: 30 Days</p>
+    <p>Illustrative Projected Value: ₦39,000</p>
+    <p>Daily Simulated Task Reward: ₦1,300</p>
+    <p>Task Reset Interval: 24 Hours</p>
+    <p>Unlocks Tier 4 Tasks</p>
+    <p>30th-Day Monthly Cycle</p>
+    <button onclick="planNotice('Tier 4')">
+      Activate ₦9,000
+    </button>
+  </div>
+
+  <div class="plan">
+    <h3>Premier</h3>
+    <span class="tag">PREMIUM</span>
+    <p>Simulated Capital: ₦12,000</p>
+    <p>Duration: 30 Days</p>
+    <p>Illustrative Projected Value: ₦51,000</p>
+    <p>Daily Simulated Task Reward: ₦1,700</p>
+    <p>Task Reset Interval: 24 Hours</p>
+    <p>Unlocks Premier Tasks</p>
+    <p>30th-Day Monthly Cycle</p>
+    <button onclick="planNotice('Premier')">
+      Activate ₦12,000
+    </button>
+  </div>
+
+  <p class="notice">
+    Fictional educational simulation only.
+    Values are illustrative, not guaranteed returns.
+    No real investment or payment is processed here.
+  </p>
+</section>
+
+<section id="profile">
+  <h2>My Profile</h2>
+  <input id="fullName" placeholder="Full name">
+  <input id="phone" placeholder="Phone number">
+  <p>Account Status: <strong>Active</strong></p>
+  <button onclick="alert('Profile saving requires backend connection.')">
+    Save Profile
+  </button>
+</section>
+
+<section id="deposit-proof">
+  <h2>Deposit Payment Proof</h2>
+  <p class="muted">
+    Select your payment screenshot from your phone gallery.
+  </p>
+
+  <input type="file" id="depositImage"
+    accept="image/*">
+
+  <img id="preview" alt="Selected payment proof">
+
+  <button id="uploadProof">
+    Upload Proof
+  </button>
+
+  <p id="uploadMessage" class="notice">
+    Secure image storage and deposit review are pending backend setup.
+  </p>
+</section>
+
+<section id="withdrawal-times">
   <h2>Withdrawal Schedule</h2>
 
-  <p>Affiliate Withdrawal</p>
-  <p>8:30 AM – 10:00 AM</p>
+  <div class="plan">
+    <h3>Affiliate Withdrawal</h3>
+    <p>8:30 AM – 10:00 AM</p>
+  </div>
 
-  <p>Task Withdrawal</p>
-  <p>Every 30th: 7:00 PM – 9:30 PM</p>
-</section>document.getElementById("uploadProof").onclick = function() {
-  const image = document.getElementById("depositImage");
-  if (!image.files.length) {
+  <div class="plan">
+    <h3>Task Withdrawal</h3>
+    <p>Every 30th of the month</p>
+    <p>7:00 PM – 9:30 PM</p>
+  </div>
+</section>
+
+<section id="renewal">
+  <h2>Plan Renewal</h2>
+  <p>Plan duration: 30 Days</p>
+  <p>At the end of the monthly cycle, the plan expires.</p>
+  <p>A new plan must be activated to begin another cycle.</p>
+  <p class="notice">
+    Expiry and renewal must be enforced by the secure backend.
+  </p>
+</section>
+
+<section id="admin-users">
+  <h2>Admin – User Management</h2>
+  <input id="userEmail" type="email"
+    placeholder="Enter user's email">
+
+  <button onclick="adminNotice('Suspend')">
+    Suspend User
+  </button>
+
+  <button class="secondary"
+    onclick="adminNotice('Reactivate')">
+    Reactivate User
+  </button>
+
+  <p class="notice">
+    Admin permissions and account suspension require
+    secure server-side authorization.
+  </p>
+</section>
+
+<section id="admin-plans">
+  <h2>Admin – Plan Management</h2>
+  <input id="newPlanName" placeholder="Plan name">
+  <input id="newPlanCapital" type="number"
+    placeholder="Simulated capital">
+
+  <button onclick="adminNotice('Add plan')">
+    Add Plan
+  </button>
+
+  <button class="secondary"
+    onclick="adminNotice('Delete plan')">
+    Delete Plan
+  </button>
+</section>
+
+<section id="admin-deposits">
+  <h2>Admin – Deposit Account Management</h2>
+  <input id="bankName" placeholder="Bank name">
+  <input id="accountName" placeholder="Account name">
+  <input id="accountNumber" placeholder="Account number">
+
+  <button onclick="adminNotice('Edit deposit account')">
+    Save Account Details
+  </button>
+
+  <button class="secondary"
+    onclick="adminNotice('Delete deposit account')">
+    Delete Deposit Account
+  </button>
+</section>
+
+<footer>
+  VESTORA © 2026. All rights reserved.
+</footer>
+
+</div>
+
+<script>
+function authNotice(action) {
+  document.getElementById("authMessage").textContent =
+    action + " requires secure Supabase authentication setup.";
+}
+
+function planNotice(name) {
+  alert(name + " is an educational simulation plan. Activation is not connected to real payments.");
+}
+
+function adminNotice(action) {
+  alert(action + " requires secure admin backend authorization.");
+}
+
+const depositImage =
+  document.getElementById("depositImage");
+
+depositImage.addEventListener("change", function() {
+  const file = this.files[0];
+  const preview = document.getElementById("preview");
+
+  if (!file) {
+    preview.style.display = "none";
+    return;
+  }
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please select an image.");
+    this.value = "";
+    return;
+  }
+
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+});
+
+document.getElementById("uploadProof").onclick = function() {
+  if (!depositImage.files.length) {
     alert("Please select your deposit screenshot.");
     return;
   }
-  alert("Image selected. Secure upload will be connected next.");
-};
 
-<p>Educational simulation only. Values are illustrative, not guaranteed returns.</p>
+  document.getElementById("uploadMessage").textContent =
+    "Image selected. Secure upload is not connected yet.";
+};
+</script>
+
+</body>
+</html>

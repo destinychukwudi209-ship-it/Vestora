@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b09">
+  <title>VESTORA — Investment Platform</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--bg:#080b09;--surface:#101612;--surface2:#151e18;--surface3:#1b281f;--lime:#b7ff38;--lime2:#d1ff83;--text:#f4f7f2;--muted:#929b91;--line:rgba(255,255,255,.09);--red:#ff7272;--amber:#ffc66d;--radius:18px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,system-ui,-apple-system,Segoe UI,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:var(--lime)}
+    .hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:12px}.eyebrow{color:var(--lime);font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+    .auth-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,rgba(183,255,56,.09),transparent 55%)}
+    .auth-card{width:min(100%,460px);background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:30px;box-shadow:0 24px 80px #0008}
+    .brand{display:flex;align-items:center;gap:11px;font-size:23px;font-weight:900;letter-spacing:.12em}.brand-mark{width:38px;height:38px;border-radius:12px;background:var(--lime);color:#10160c;display:grid;place-items:center;font-weight:1000}
+    .auth-card h1{font-size:27px;margin:26px 0 5px}.field{display:grid;gap:7px;margin:15px 0}.field label{font-size:12px;color:var(--muted);font-weight:700}.field input,.field select,.field textarea,.search-input{width:100%;background:#0b100d;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:13px 14px;outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--lime)}
+    .btn{border:0;border-radius:12px;padding:12px 17px;font-weight:800}.btn-primary{background:var(--lime);color:#11170b}.btn-primary:hover{background:var(--lime2)}.btn-secondary{background:var(--surface3);border:1px solid var(--line);color:var(--text)}.btn-danger{background:#401d20;color:#ffb0b0;border:1px solid #713238}.btn-block{width:100%;margin-top:10px}.auth-links{display:flex;justify-content:space-between;gap:12px;margin-top:16px;font-size:13px}.link-btn{border:0;background:none;color:var(--lime);padding:0}
+    .notice{padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#0b100d;color:var(--muted);font-size:13px;margin:14px 0}.notice.error{border-color:#713238;color:#ffaaaa}.notice.success{border-color:#45632b;color:#d4ff9b}
+    .app{min-height:100vh}.topbar{height:70px;position:sticky;top:0;z-index:20;background:#0a0f0bdc;backdrop-filter:blur(18px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px}.top-actions{display:flex;align-items:center;gap:10px}
+    .layout{display:grid;grid-template-columns:255px minmax(0,1fr);min-height:calc(100vh - 70px)}.sidebar{border-right:1px solid var(--line);padding:20px 14px;background:#0b100d}.side-label{font-size:10px;color:#687268;letter-spacing:.15em;font-weight:900;padding:16px 12px 7px}.nav-btn{width:100%;display:flex;align-items:center;gap:11px;text-align:left;padding:11px 12px;border:0;border-radius:11px;background:transparent;color:#b8c0b6;margin:2px 0;font-size:13px}.nav-btn:hover,.nav-btn.active{background:rgba(183,255,56,.1);color:var(--lime)}.nav-icon{width:20px;text-align:center}
+    main{padding:30px;max-width:1500px;width:100%;margin:auto}.page{display:none}.page.active{display:block}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:24px}.page-head h1{margin:4px 0;font-size:27px}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:0}.span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-8{grid-column:span 8}.span-12{grid-column:span 12}.stat-label{font-size:12px;color:var(--muted)}.stat-value{font-size:27px;font-weight:850;margin-top:8px}.stat-foot{font-size:11px;color:var(--muted);margin-top:5px}.card h3{margin:0 0 12px;font-size:15px}.section-intro{color:var(--muted);margin-top:0}.pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:11px;color:var(--muted)}.pill.lime{color:var(--lime);border-color:#506d2d;background:#1b2813}.empty{border:1px dashed #344036;border-radius:13px;padding:24px;text-align:center;color:var(--muted);font-size:13px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.divider{height:1px;background:var(--line);margin:16px 0}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:520px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);font-size:12px}th{color:var(--muted);font-weight:700}
+    .module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.module{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:17px}.module strong{display:block;margin-bottom:6px}.module p{font-size:12px;color:var(--muted);margin:0 0 12px}.module .pill{margin-top:3px}
+    .mobile-menu{display:none}.toast{position:fixed;right:20px;bottom:20px;z-index:50;background:var(--surface3);border:1px solid var(--line);padding:13px 17px;border-radius:12px;max-width:min(90vw,400px);box-shadow:0 10px 40px #0008}
+    footer{padding:25px 0;color:#657064;font-size:11px;text-align:center}
+    @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none;position:fixed;z-index:30;top:70px;bottom:0;left:0;width:280px;overflow:auto;box-shadow:20px 0 60px #0009}.sidebar.open{display:block}.mobile-menu{display:inline-flex}.topbar{padding:0 15px}main{padding:22px 15px}.span-3,.span-4{grid-column:span 6}.span-8,.span-6{grid-column:span 12}}
+    @media(max-width:520px){.auth-card{padding:22px}.topbar .brand{font-size:17px}.topbar .brand-mark{width:32px;height:32px}.span-3,.span-4,.span-6,.span-8{grid-column:span 12}.page-head{display:block}.page-head .btn{margin-top:12px}.stat-value{font-size:24px}}
+  </style>
+</head>
+<body>
+  <div id="authView" class="auth-wrap">
+    <div class="auth-card">
+      <div class="brand"><span class="brand-mark">V</span><span>VESTORA</span></div>
+      <div id="loginPanel">
+        <p class="eyebrow">Your financial journey</p><h1>Welcome back</h1><p class="muted">Sign in to access your VESTORA account.</p>
+        <div id="authMessage" class="notice hidden" role="status"></div>
+        <form id="loginForm">
+          <div class="field"><label for="loginEmail">EMAIL ADDRESS</label><input id="loginEmail" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="loginPassword">PASSWORD</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
+          <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+        <div class="auth-links"><button class="link-btn" id="showRegister">Create account</button><button class="link-btn" id="showForgot">Forgot password?</button></div>
+      </div>
+      <div id="registerPanel" class="hidden">
+        <p class="eyebrow">Get started</p><h1>Create your account</h1><p class="muted">Register with your details below.</p>
+        <form id="registerForm">
+          <div class="field"><label for="regName">FULL NAME</label><input id="regName" autocomplete="name" required></div>
+          <div class="field"><label for="regPhone">PHONE NUMBER</label><input id="regPhone" type="tel" autocomplete="tel"></div>
+          <div class="field"><label for="regEmail">EMAIL ADDRESS</label><input id="regEmail" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="regPassword">PASSWORD (MINIMUM 8 CHARACTERS)</label><input id="regPassword" type="password" minlength="8" autocomplete="new-password" required></div>
+          <button class="btn btn-primary btn-block" type="submit">Create account</button>
+        </form><div class="auth-links"><button class="link-btn" id="showLogin1">Already registered? Sign in</button></div>
+      </div>
+      <div id="forgotPanel" class="hidden">
+        <p class="eyebrow">Account recovery</p><h1>Reset password</h1><p class="muted">Enter your account email and we will send a reset link if the account exists.</p>
+        <form id="forgotForm"><div class="field"><label for="forgotEmail">EMAIL ADDRESS</label><input id="forgotEmail" type="email" required></div><button class="btn btn-primary btn-block" type="submit">Send reset link</button></form>
+        <div class="auth-links"><button class="link-btn" id="showLogin2">Back to sign in</button></div>
+      </div>
+      <div id="resetPanel" class="hidden">
+        <p class="eyebrow">Secure your account</p><h1>Choose a new password</h1>
+        <form id="resetForm"><div class="field"><label for="newPassword">NEW PASSWORD</label><input id="newPassword" type="password" minlength="8" required></div><div class="field"><label for="confirmPassword">CONFIRM PASSWORD</label><input id="confirmPassword" type="password" minlength="8" required></div><button class="btn btn-primary btn-block" type="submit">Update password</button></form>
+      </div>
+      <p class="small muted" style="margin-top:25px">Protect your password. VESTORA support will never ask you to share it.</p>
+    </div>
+  </div>
+
+  <div id="appView" class="app hidden">
+    <header class="topbar">
+      <div class="row" style="justify-content:flex-start"><button class="btn btn-secondary mobile-menu" id="menuToggle" aria-label="Open menu">☰</button><div class="brand"><span class="brand-mark">V</span><span>VESTORA</span></div></div>
+      <div class="top-actions"><span class="pill lime" id="userBadge">CUSTOMER</span><button class="btn btn-secondary" id="logoutBtn">Sign out</button></div>
+    </header>
+    <div class="layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="side-label">YOUR SPACE</div>
+        <button class="nav-btn active" data-page="overview"><span class="nav-icon">⌂</span>Overview</button>
+        <button class="nav-btn" data-page="profile"><span class="nav-icon">◉</span>My Profile</button>
+        <button class="nav-btn" data-page="wallets"><span class="nav-icon">▣</span>Wallets and Earnings</button>
+        <button class="nav-btn" data-page="deposits"><span class="nav-icon">＋</span>Deposits and Payment Proof</button>
+        <button class="nav-btn" data-page="withdrawals"><span class="nav-icon">↗</span>Withdrawals</button>
+        <button class="nav-btn" data-page="investments"><span class="nav-icon">◈</span>Investments and Portfolio</button>
+        <button class="nav-btn" data-page="renewals"><span class="nav-icon">⟳</span>Renewals and Cancellations</button>
+        <button class="nav-btn" data-page="tasks"><span class="nav-icon">✓</span>Daily Tasks and Rewards</button>
+        <button class="nav-btn" data-page="referrals"><span class="nav-icon">♧</span>Referrals and Affiliate</button>
+        <button class="nav-btn" data-page="membership"><span class="nav-icon">★</span>Membership and Promo Codes</button>
+        <button class="nav-btn" data-page="calendar"><span class="nav-icon">▦</span>Payment Calendar</button>
+        <button class="nav-btn" data-page="transactions"><span class="nav-icon">≡</span>Transactions and Statements</button>
+        <button class="nav-btn" data-page="goals"><span class="nav-icon">◎</span>Savings Goals and Achievements</button>
+        <div class="side-label">COMMUNICATION</div>
+        <button class="nav-btn" data-page="notifications"><span class="nav-icon">♢</span>Notifications and Announcements</button>
+        <button class="nav-btn" data-page="documents"><span class="nav-icon">▤</span>Document Centre</button>
+        <button class="nav-btn" data-page="support"><span class="nav-icon">?</span>Support and Disputes</button>
+        <div class="side-label">PREFERENCES</div>
+        <button class="nav-btn" data-page="security"><span class="nav-icon">◇</span>Security Centre</button>
+        <button class="nav-btn" data-page="settings"><span class="nav-icon">⚙</span>Language and Settings</button>
+        <button class="nav-btn" data-page="feedback"><span class="nav-icon">✧</span>Feedback and Surveys</button>
+      </aside>
+      <main>
+        <section class="page active" id="page-overview">
+          <div class="page-head"><div><p class="eyebrow">CUSTOMER DASHBOARD</p><h1>Welcome, <span id="welcomeName">Member</span></h1><p class="muted">Your account overview and activity at a glance.</p></div><span class="pill lime">Account: <span id="accountStatus">Active</span></span></div>
+          <div class="grid">
+            <div class="card span-3"><div class="stat-label">Available balance</div><div class="stat-value">₦0.00</div><div class="stat-foot">Wallet connection pending</div></div>
+            <div class="card span-3"><div class="stat-label">Investment balance</div><div class="stat-value">₦0.00</div><div class="stat-foot">Wallet connection pending</div></div>
+            <div class="card span-3"><div class="stat-label">Task rewards</div><div class="stat-value">₦0.00</div><div class="stat-foot">Wallet connection pending</div></div>
+            <div class="card span-3"><div class="stat-label">Affiliate rewards</div><div class="stat-value">₦0.00</div><div class="stat-foot">Wallet connection pending</div></div>
+            <div class="card span-8"><h3>Getting started</h3><p class="section-intro">Complete your profile and review the platform information before using any financial feature.</p><div class="row"><span>Profile details</span><span class="pill">Review profile</span></div><div class="divider"></div><div class="row"><span>Deposit and withdrawal services</span><span class="pill">Backend connection pending</span></div><div class="divider"></div><div class="row"><span>Investment plans</span><span class="pill">Admin configuration pending</span></div></div>
+            <div class="card span-4"><h3>Account notice</h3><p class="muted small">Displayed balances are placeholders until verified wallet data is connected. No investment, deposit, withdrawal or return is confirmed by this screen.</p><span class="pill lime">Secure account access</span></div>
+            <div class="card span-12"><h3>Recent activity</h3><div class="empty">Your verified transactions will appear here when transaction history is connected.</div></div>
+          </div>
+        </section>
+
+        <section class="page" id="page-profile">
+          <div class="page-head"><div><p class="eyebrow">ACCOUNT</p><h1>My Profile</h1><p class="muted">View your account information.</p></div></div>
+          <div class="grid"><div class="card span-6"><h3>Personal information</h3><div class="field"><label>FULL NAME</label><input id="profileName" readonly></div><div class="field"><label>EMAIL</label><input id="profileEmail" readonly></div><div class="field"><label>PHONE</label><input id="profilePhone" readonly></div><div class="field"><label>REFERRAL CODE</label><input id="profileReferral" readonly></div><p class="small muted">Profile editing and avatar upload will be enabled after their secure update flow is connected.</p></div><div class="card span-6"><h3>Profile picture</h3><div class="empty">Avatar upload is not connected yet.</div></div></div>
+        </section>
+
+        <section class="page" id="page-wallets">
+          <div class="page-head"><div><p class="eyebrow">MONEY</p><h1>Wallets and Earnings</h1><p class="muted">Separate wallet balances and earnings summaries.</p></div></div>
+          <div class="module-grid"><div class="module"><strong>Available wallet</strong><p>Available funds and eligible balance.</p><span class="pill">₦0.00 · Not connected</span></div><div class="module"><strong>Investment wallet</strong><p>Funds committed to active investments.</p><span class="pill">₦0.00 · Not connected</span></div><div class="module"><strong>Task rewards wallet</strong><p>Approved task rewards.</p><span class="pill">₦0.00 · Not connected</span></div><div class="module"><strong>Affiliate wallet</strong><p>Approved referral rewards.</p><span class="pill">₦0.00 · Not connected</span></div></div>
+        </section>
+
+        <section class="page" id="page-deposits">
+          <div class="page-head"><div><p class="eyebrow">FUND ACCOUNT</p><h1>Deposits and Payment Proof</h1><p class="muted">Deposit instructions, references and proof review.</p></div></div>
+          <div class="grid"><div class="card span-6"><h3>Submit a deposit</h3><p class="section-intro">Deposit submission is not enabled in this version. Do not send money based on unverified account details.</p><div class="field"><label>AMOUNT (₦)</label><input type="number" min="1" placeholder="0.00" disabled></div><div class="field"><label>PAYMENT REFERENCE</label><input placeholder="Reference number" disabled></div><div class="field"><label>PAYMENT PROOF IMAGE</label><input type="file" accept="image/png,image/jpeg,image/webp" disabled></div><button class="btn btn-secondary" disabled>Submit deposit (not connected)</button></div><div class="card span-6"><h3>Deposit history</h3><div class="empty">No deposit records loaded. Secure proof upload and admin review will be connected here.</div></div></div>
+        </section>
+
+        <section class="page" id="page-withdrawals">
+          <div class="page-head"><div><p class="eyebrow">PAYOUTS</p><h1>Withdrawals and Verification</h1><p class="muted">Manage payout requests and review their status.</p></div></div>
+          <div class="grid"><div class="card span-6"><h3>Request a withdrawal</h3><p class="section-intro">Withdrawal requests are not enabled from this screen yet.</p><div class="field"><label>AMOUNT (₦)</label><input type="number" disabled></div><div class="field"><label>BANK</label><input disabled></div><div class="field"><label>ACCOUNT NAME</label><input disabled></div><div class="field"><label>ACCOUNT NUMBER</label><input disabled></div><button class="btn btn-secondary" disabled>Request withdrawal</button></div><div class="card span-6"><h3>Withdrawal history</h3><div class="empty">Your withdrawal requests will appear here after secure history loading is connected.</div></div></div>
+        </section>
+
+        <section class="page" id="page-investments">
+          <div class="page-head"><div><p class="eyebrow">PORTFOLIO</p><h1>Investments and Portfolio</h1><p class="muted">Review available plans and investment records.</p></div></div>
+          <div class="notice">Investment plan display and account-specific portfolio data are not connected yet. Any projected value must be clearly presented as illustrative and never as a guaranteed return.</div><div class="card"><h3>Available investment plans</h3><div class="empty">Plans configured by the platform administrator will appear here.</div></div>
+        </section>
+
+        <section class="page" id="page-renewals">
+          <div class="page-head"><div><p class="eyebrow">INVESTMENT CONTROLS</p><h1>Automatic Renewal and Cancellations</h1></div></div>
+          <div class="module-grid"><div class="module"><strong>Automatic renewal</strong><p>Review renewal preferences for eligible plans.</p><span class="pill">Not connected</span></div><div class="module"><strong>Cancellation requests</strong><p>Submit and track cancellation requests.</p><span class="pill">Not connected</span></div></div>
+        </section>
+
+        <section class="page" id="page-tasks">
+          <div class="page-head"><div><p class="eyebrow">ENGAGEMENT</p><h1>Daily Tasks and Rewards</h1></div></div>
+          <div class="card"><h3>Available tasks</h3><div class="empty">Active tasks and submission requirements will appear here after secure task loading is connected.</div></div>
+        </section>
+
+        <section class="page" id="page-referrals">
+          <div class="page-head"><div><p class="eyebrow">GROW WITH VESTORA</p><h1>Referrals and Affiliate Centre</h1></div></div>
+          <div class="grid"><div class="card span-6"><h3>Your referral code</h3><div class="field"><input id="referralDisplay" readonly placeholder="Referral code not loaded"></div><button class="btn btn-secondary" id="copyReferral">Copy code</button></div><div class="card span-6"><h3>Referral activity</h3><div class="empty">Referral records and approved rewards will appear here.</div></div></div>
+        </section>
+
+        <section class="page" id="page-membership">
+          <div class="page-head"><div><p class="eyebrow">MEMBERSHIP</p><h1>Membership Levels and Promo Codes</h1></div></div>
+          <div class="module-grid"><div class="module"><strong>Membership levels</strong><p>Tier eligibility, benefits and progression.</p><span class="pill">Configuration pending</span></div><div class="module"><strong>Promo codes</strong><p>Enter eligible promotional codes.</p><span class="pill">Redemption not connected</span></div></div>
+        </section>
+
+        <section class="page" id="page-calendar">
+          <div class="page-head"><div><p class="eyebrow">SCHEDULE</p><h1>Payment Calendar and Countdown</h1></div></div>
+          <div class="card"><h3>Upcoming payment dates</h3><div class="empty">Payment dates and countdowns will appear when confirmed schedules are connected.</div></div>
+        </section>
+
+        <section class="page" id="page-transactions">
+          <div class="page-head"><div><p class="eyebrow">RECORDS</p><h1>Transactions, Receipts and Statements</h1></div></div>
+          <div class="card"><h3>Transaction history</h3><div class="table-wrap"><table><thead><tr><th>DATE</th><th>TYPE</th><th>REFERENCE</th><th>AMOUNT</th><th>STATUS</th></tr></thead><tbody><tr><td colspan="5" class="muted">Transaction history is not loaded yet.</td></tr></tbody></table></div></div>
+        </section>
+
+        <section class="page" id="page-goals">
+          <div class="page-head"><div><p class="eyebrow">PROGRESS</p><h1>Savings Goals and Achievements</h1></div></div>
+          <div class="module-grid"><div class="module"><strong>Savings goals</strong><p>Set targets and track progress.</p><span class="pill">Not connected</span></div><div class="module"><strong>Achievement centre</strong><p>Milestones, badges and account activity.</p><span class="pill">Not connected</span></div></div>
+        </section>
+
+        <section class="page" id="page-notifications">
+          <div class="page-head"><div><p class="eyebrow">UPDATES</p><h1>Notifications and Announcements</h1></div></div>
+          <div class="card"><h3>Your notifications</h3><div class="empty">Notifications and platform announcements will appear here when connected.</div><div class="divider"></div><div class="row"><span class="muted small">Notification sound preferences</span><button class="btn btn-secondary" id="soundToggle">Sound: Off</button></div></div>
+        </section>
+
+        <section class="page" id="page-documents">
+          <div class="page-head"><div><p class="eyebrow">FILES</p><h1>Document Centre</h1></div></div>
+          <div class="card"><h3>Your documents</h3><div class="empty">Statements, receipts, policies and account documents will appear here.</div></div>
+        </section>
+
+        <section class="page" id="page-support">
+          <div class="page-head"><div><p class="eyebrow">HELP DESK</p><h1>Support and Dispute Centre</h1></div></div>
+          <div class="grid"><div class="card span-6"><h3>Create a support ticket</h3><form id="supportForm"><div class="field"><label>SUBJECT</label><input id="supportSubject" maxlength="120" required></div><div class="field"><label>MESSAGE</label><textarea id="supportBody" rows="5" maxlength="4000" required></textarea></div><button class="btn btn-primary" type="submit">Submit ticket</button></form><div id="supportMessage" class="notice hidden"></div></div><div class="card span-6"><h3>Your support history</h3><div class="empty">Your support tickets will appear here after history loading is connected.</div></div></div>
+        </section>
+
+        <section class="page" id="page-security">
+          <div class="page-head"><div><p class="eyebrow">PROTECTION</p><h1>Security Centre</h1></div></div>
+          <div class="module-grid"><div class="module"><strong>Password and recovery</strong><p>Use the password reset process to secure your account.</p><span class="pill lime">Password recovery available</span></div><div class="module"><strong>Login history</strong><p>Review recent account access.</p><span class="pill">Not connected</span></div><div class="module"><strong>Trusted devices</strong><p>Manage remembered devices.</p><span class="pill">Not connected</span></div><div class="module"><strong>Passkeys / biometrics</strong><p>Passkey sign-in may be added on supported devices. Biometric templates must remain on the device.</p><span class="pill">Not connected</span></div></div>
+        </section>
+
+        <section class="page" id="page-settings">
+          <div class="page-head"><div><p class="eyebrow">PREFERENCES</p><h1>Language and Account Settings</h1></div></div>
+          <div class="card"><p class="section-intro">Language, privacy preferences and account settings will be managed here.</p><div class="notice">Preference controls are not connected yet. Your account access and security rules are enforced by the backend.</div></div>
+        </section>
+
+        <section class="page" id="page-feedback">
+          <div class="page-head"><div><p class="eyebrow">YOUR VOICE</p><h1>Feedback and Surveys</h1></div></div>
+          <div class="card"><p class="section-intro">Share feedback to help improve the platform.</p><div class="field"><label>YOUR FEEDBACK</label><textarea rows="5" disabled placeholder="Feedback submission will be enabled here."></textarea></div><button class="btn btn-secondary" disabled>Submit feedback</button></div>
+        </section>
+        <footer>© <span id="year"></span> VESTORA. All rights reserved. Please review all terms and risk disclosures before making financial decisions.</footer>
+      </main>
+    </div>
+  </div>
+  <div id="toast" class="toast hidden" role="status"></div>
+
+<script>
+(() => {
+  "use strict";
+  const SUPABASE_URL = "https://rqdqfjcjakkbjnzhklas.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Kytlo-JZc6qRwf4A98N86g_0-e91XYW";
+  const $ = (id) => document.getElementById(id);
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  let currentUser = null;
+  let currentProfile = null;
+  let toastTimer;
+
+  function toast(message) {
+    const el = $("toast"); el.textContent = message; el.classList.remove("hidden");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.add("hidden"), 4200);
+  }
+  function showAuthMessage(message, type = "error") {
+    const el = $("authMessage"); el.textContent = message; el.className = "notice " + type;
+  }
+  function clearAuthMessage() { $("authMessage").classList.add("hidden"); }
+  function showAuthPanel(name) {
+    ["loginPanel","registerPanel","forgotPanel","resetPanel"].forEach(id => $(id).classList.toggle("hidden", id !== name));
+    clearAuthMessage();
+  }
+  function showApp() { $("authView").classList.add("hidden"); $("appView").classList.remove("hidden"); }
+  function showLogin() { $("appView").classList.add("hidden"); $("authView").classList.remove("hidden"); showAuthPanel("loginPanel"); }
+  function money(value) { return "₦" + Number(value || 0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  async function loadProfile(user) {
+    const { data, error } = await supabaseClient.from("profiles")
+      .select("id,full_name,phone,avatar_url,referral_code,role,account_status")
+      .eq("id", user.id).maybeSingle();
+    if (error) throw error;
+    if (!data) throw new Error("Your profile could not be found. Please contact support.");
+    if (data.account_status !== "active" && data.role !== "admin") {
+      await supabaseClient.auth.signOut();
+      throw new Error("This account is suspended. Please contact VESTORA support.");
+    }
+    if (data.role !== "customer" && data.role !== "admin") {
+      await supabaseClient.auth.signOut();
+      throw new Error("This account does not have customer access.");
+    }
+    return data;
+  }
+
+  async function startApp(user) {
+    try {
+      currentUser = user;
+      currentProfile = await loadProfile(user);
+      $("welcomeName").textContent = currentProfile.full_name || user.email || "Member";
+      $("profileName").value = currentProfile.full_name || "";
+      $("profileEmail").value = user.email || "";
+      $("profilePhone").value = currentProfile.phone || "";
+      $("profileReferral").value = currentProfile.referral_code || "";
+      $("referralDisplay").value = currentProfile.referral_code || "";
+      $("userBadge").textContent = currentProfile.role.toUpperCase();
+      $("accountStatus").textContent = currentProfile.account_status || "Active";
+      showApp();
+      navigate("overview");
+    } catch (error) {
+      await supabaseClient.auth.signOut();
+      showLogin();
+      showAuthMessage(error.message || "Unable to verify your account. Please try again.");
+    }
+  }
+
+  function navigate(page) {
+    document.querySelectorAll(".page").forEach(el => el.classList.toggle("active", el.id === "page-" + page));
+    document.querySelectorAll(".nav-btn").forEach(el => el.classList.toggle("active", el.dataset.page === page));
+    $("sidebar").classList.remove("open");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  $("showRegister").addEventListener("click", () => showAuthPanel("registerPanel"));
+  $("showLogin1").addEventListener("click", () => showAuthPanel("loginPanel"));
+  $("showLogin2").addEventListener("click", () => showAuthPanel("loginPanel"));
+  $("showForgot").addEventListener("click", () => showAuthPanel("forgotPanel"));
+  $("menuToggle").addEventListener("click", () => $("sidebar").classList.toggle("open"));
+  document.querySelectorAll(".nav-btn").forEach(btn => btn.addEventListener("click", () => navigate(btn.dataset.page)));
+  $("logoutBtn").addEventListener("click", async () => {
+    const { error } = await supabaseClient.auth.signOut();
+    if (error) toast(error.message); else { currentUser = null; currentProfile = null; showLogin(); }
+  });
+
+  $("loginForm").addEventListener("submit", async (event) => {
+    event.preventDefault(); clearAuthMessage();
+    const button = event.submitter; button.disabled = true; button.textContent = "Signing in...";
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: $("loginEmail").value.trim(), password: $("loginPassword").value
+    });
+    button.disabled = false; button.textContent = "Sign in";
+    if (error) return showAuthMessage(error.message);
+    if (data.user) await startApp(data.user);
+  });
+
+  $("registerForm").addEventListener("submit", async (event) => {
+    event.preventDefault(); clearAuthMessage();
+    const button = event.submitter; button.disabled = true; button.textContent = "Creating account...";
+    const fullName = $("regName").value.trim(), phone = $("regPhone").value.trim();
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: $("regEmail").value.trim(), password: $("regPassword").value,
+      options: { data: { full_name: fullName, phone }, emailRedirectTo: window.location.origin + window.location.pathname }
+    });
+    button.disabled = false; button.textContent = "Create account";
+    if (error) return showAuthMessage(error.message);
+    if (data.session && data.user) {
+      showAuthMessage("Account created. Opening your dashboard...", "success");
+      await startApp(data.user);
+    } else {
+      showAuthMessage("Registration received. Check your email to confirm your account, then sign in.", "success");
+      showAuthPanel("loginPanel");
+    }
+  });
+
+  $("forgotForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const { error } = await supabaseClient.auth.resetPasswordForEmail($("forgotEmail").value.trim(), {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+    if (error) showAuthMessage(error.message);
+    else { showAuthPanel("loginPanel"); showAuthMessage("If an account exists for that email, a password reset link has been sent.", "success"); }
+  });
+
+  $("resetForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const password = $("newPassword").value;
+    if (password !== $("confirmPassword").value) return showAuthMessage("The passwords do not match.");
+    const { error } = await supabaseClient.auth.updateUser({password});
+    if (error) return showAuthMessage(error.message);
+    await supabaseClient.auth.signOut();
+    showAuthPanel("loginPanel"); showAuthMessage("Password updated. Please sign in with your new password.", "success");
+  });
+
+  $("supportForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!currentUser) return toast("Please sign in again.");
+    const button = event.submitter; button.disabled = true;
+    const subject = $("supportSubject").value.trim(), body = $("supportBody").value.trim();
+    const { data, error } = await supabaseClient.from("support_tickets")
+      .insert({user_id: currentUser.id, subject, status:"open"}).select("id").single();
+    if (error) {
+      button.disabled = false;
+      $("supportMessage").textContent = "Could not create ticket: " + error.message;
+      $("supportMessage").className = "notice error";
+      return;
+    }
+    const { error: messageError } = await supabaseClient.from("support_messages").insert({
+      ticket_id:data.id, sender_id:currentUser.id, sender_role:"customer", body
+    });
+    button.disabled = false;
+    if (messageError) {
+      $("supportMessage").textContent = "Ticket created, but the message could not be saved. Please contact support with ticket ID " + data.id + ".";
+      $("supportMessage").className = "notice error";
+      return;
+    }
+    $("supportForm").reset();
+    $("supportMessage").textContent = "Your support ticket was submitted successfully.";
+    $("supportMessage").className = "notice success";
+  });
+
+  $("copyReferral").addEventListener("click", async () => {
+    const code = $("referralDisplay").value;
+    if (!code) return toast("No referral code is available yet.");
+    try { await navigator.clipboard.writeText(code); toast("Referral code copied."); }
+    catch (_) { toast("Copy is not supported on this browser."); }
+  });
+  let soundOn = false;
+  $("soundToggle").addEventListener("click", () => {
+    soundOn = !soundOn; $("soundToggle").textContent = "Sound: " + (soundOn ? "On" : "Off");
+    toast("Sound preference is visual only until notification audio is connected.");
+  });
+  $("year").textContent = new Date().getFullYear();
+
+  supabaseClient.auth.onAuthStateChange(async (event, session) => {
+    if (event === "PASSWORD_RECOVERY") {
+      $("authView").classList.remove("hidden"); $("appView").classList.add("hidden"); showAuthPanel("resetPanel");
+      return;
+    }
+    if (event === "SIGNED_OUT") {
+      currentUser = null; currentProfile = null;
+      if (!$("authView").classList.contains("hidden") || !$("appView").classList.contains("hidden")) showLogin();
+    }
+  });
+
+  (async function initialize() {
+    const { data, error } = await supabaseClient.auth.getSession();
+    if (error) { showLogin(); showAuthMessage("Unable to check your session. Please sign in."); return; }
+    if (data.session && data.session.user) await startApp(data.session.user);
+    else showLogin();
+  })();
+})();
+</script>
+</body>
+</html>

@@ -3,272 +3,230 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080b09">
 <title>VESTORA | Invest · Grow · Prosper</title>
 <link rel="stylesheet" href="styles.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 [hidden]{display:none!important}
-:root{--bg:#080b09;--surface:#101612;--surface2:#151e18;--lime:#b7ff38;--text:#f4f7f2;--muted:#929b91;--border:rgba(183,255,56,.14)}
-body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-button,input,select,textarea{font:inherit}
+body{background:#080b09;color:#f4f7f2;font-family:Arial,sans-serif;margin:0}
+:root{--bg:#080b09;--surface:#101612;--lime:#b7ff38;--muted:#929b91;--border:rgba(183,255,56,.14)}
+button,input,select{font:inherit}
 button{cursor:pointer}
 .app{min-height:100vh}
-.topbar{position:sticky;top:0;z-index:20;background:#0b100d;border-bottom:1px solid var(--border);padding:15px 4%;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.topbar{position:sticky;top:0;z-index:20;background:#0b100d;border-bottom:1px solid var(--border);padding:15px 4%;display:flex;align-items:center;justify-content:space-between}
 .logo{font-size:22px;font-weight:900;letter-spacing:2px;color:white;text-decoration:none}
 .logo span{color:var(--lime)}
-.top-actions{display:flex;align-items:center;gap:10px}
-.icon-btn,.menu-btn{background:var(--surface2);border:1px solid var(--border);color:white;border-radius:10px;padding:10px 13px}
+.top-actions{display:flex;align-items:center;gap:12px}
+.menu-btn,.icon-btn{background:#151e18;color:white;border:1px solid var(--border);padding:10px 14px;border-radius:9px}
 .menu-btn{display:none}
-.profile-pill{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13px}
 .avatar{width:34px;height:34px;border-radius:50%;background:var(--lime);color:#080b09;display:grid;place-items:center;font-weight:bold}
+.profile-pill{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:12px}
 .layout{display:grid;grid-template-columns:235px minmax(0,1fr);max-width:1500px;margin:auto}
-.sidebar{padding:25px 15px;border-right:1px solid var(--border);min-height:calc(100vh - 65px);background:#0b100d}
-.side-label{font-size:10px;letter-spacing:1.5px;color:var(--muted);padding:15px 12px 9px}
-.nav-link{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;color:#aeb7ad;text-decoration:none;font-size:13px;margin:3px 0}
+.sidebar{padding:22px 14px;background:#0b100d;border-right:1px solid var(--border);min-height:calc(100vh - 65px)}
+.side-label{font-size:10px;letter-spacing:1.5px;color:var(--muted);padding:16px 10px 8px}
+.nav-link{display:flex;gap:12px;align-items:center;text-decoration:none;color:#aeb7ad;padding:12px;border-radius:9px;font-size:13px;margin:3px 0}
+.nav-link span{width:22px;font-size:17px}
 .nav-link:hover,.nav-link.active{background:rgba(183,255,56,.1);color:var(--lime)}
-.nav-link span{font-size:18px;width:22px;text-align:center}
-.sidebar-note{margin:25px 5px;padding:14px;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.6}
 main{padding:30px 4%;min-width:0}
 .page{display:none}
 .page.active{display:block}
-.page-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px}
-.eyebrow{color:var(--lime);font-size:10px;letter-spacing:1.8px;font-weight:bold}
-h1{font-size:27px;margin:7px 0}
-h2{font-size:18px;margin:0 0 9px}
-h3{font-size:14px;margin:0 0 8px}
-.muted,.subtext{color:var(--muted);font-size:12px;line-height:1.6}
-.welcome{background:linear-gradient(115deg,#172319,#101612 65%,#1b2917);border:1px solid var(--border);border-radius:18px;padding:27px;display:flex;align-items:center;justify-content:space-between;overflow:hidden;margin-bottom:25px}
-.welcome h2{font-size:25px;line-height:1.35;margin:12px 0}
+.page-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}
+.page-heading h1{font-size:27px;margin:7px 0}
+.eyebrow{color:var(--lime);font-size:10px;letter-spacing:1.7px;font-weight:bold}
+.muted{color:var(--muted);font-size:12px;line-height:1.6}
+.welcome{padding:26px;background:linear-gradient(115deg,#172319,#101612 70%,#1b2917);border:1px solid var(--border);border-radius:17px;display:flex;align-items:center;justify-content:space-between;margin-bottom:25px}
+.welcome h2{font-size:25px;line-height:1.4}
 .welcome h2 span{color:var(--lime)}
-.welcome-mark{font-size:100px;font-weight:900;color:rgba(183,255,56,.15)}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.card,.panel{background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:19px;min-width:0}
-.balance-card{background:linear-gradient(145deg,#151e18,#101612)}
-.balance-card p{color:var(--muted);font-size:12px}
-.balance-card h2{font-size:23px;margin:13px 0 6px}
-.balance-card small{color:var(--muted);font-size:10px}
-.lime{color:var(--lime)}
-.section-title{display:flex;justify-content:space-between;align-items:center;margin:28px 0 14px;gap:12px}
+.welcome-mark{font-size:90px;font-weight:900;color:rgba(183,255,56,.15)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.card,.panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;min-width:0}
+.card p{font-size:12px;color:var(--muted)}
+.card h2{font-size:22px;color:var(--lime)}
+.section-title{margin:27px 0 14px}
 .quick-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-.quick{display:block;text-decoration:none;color:white;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 12px}
-.quick:hover{border-color:var(--lime);transform:translateY(-2px)}
-.quick strong{display:block;font-size:13px;margin:8px 0 4px}
+.quick{display:block;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:17px 12px;color:white;text-decoration:none}
+.quick:hover{border-color:var(--lime)}
+.quick-icon{display:block;font-size:24px;color:var(--lime)}
+.quick strong{display:block;font-size:13px;margin:9px 0 5px}
 .quick small{color:var(--muted);font-size:10px}
-.quick-icon{font-size:24px;color:var(--lime)}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .panel{margin-top:15px}
-.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;gap:10px}
-.btn{border:0;border-radius:9px;padding:11px 16px;background:var(--lime);color:#080b09;font-weight:bold;font-size:12px}
-.btn-outline{background:transparent;color:var(--lime);border:1px solid var(--lime)}
-.btn-muted{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.field{margin-bottom:14px}
+.panel h2{font-size:17px}
+.empty{padding:23px;text-align:center;border:1px dashed #30442d;border-radius:10px;color:var(--muted);font-size:12px;line-height:1.8}
+.btn{background:var(--lime);color:#080b09;border:0;border-radius:8px;padding:11px 16px;font-size:12px;font-weight:bold}
+.btn-outline{background:transparent;border:1px solid var(--lime);color:var(--lime)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.field{margin:14px 0}
 .field label{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}
-.field input,.field select,.field textarea{width:100%;padding:12px;background:#080b09;border:1px solid #30442d;border-radius:9px;color:white;outline:none}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--lime)}
-.notice{background:rgba(183,255,56,.07);border:1px solid var(--border);padding:13px;border-radius:10px;color:var(--muted);font-size:11px;line-height:1.6;margin:12px 0}
-.empty{padding:25px;text-align:center;border:1px dashed #30442d;border-radius:11px;color:var(--muted);font-size:12px;line-height:1.7}
-.status{display:inline-block;padding:5px 9px;border-radius:20px;background:var(--surface2);color:var(--muted);font-size:10px}
-.list-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);font-size:12px}
-.list-row:last-child{border:0}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:11px;min-width:500px}
-th,td{text-align:left;padding:13px 10px;border-bottom:1px solid var(--border)}
-th{color:var(--muted);font-weight:normal}
-.auth-wrap{width:min(440px,92%);margin:55px auto;padding:28px;background:var(--surface);border:1px solid var(--border);border-radius:18px}
+.field input,.field select{width:100%;box-sizing:border-box;padding:12px;background:#080b09;border:1px solid #30442d;border-radius:8px;color:white}
+.notice{padding:13px;background:rgba(183,255,56,.07);border:1px solid var(--border);border-radius:9px;color:var(--muted);font-size:11px;line-height:1.7;margin:13px 0}
+.status{font-size:10px;color:var(--lime);background:rgba(183,255,56,.08);padding:6px 9px;border-radius:20px}
+.list-row{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid var(--border);font-size:12px}
+.auth-wrap{width:min(430px,90%);margin:45px auto;padding:28px;box-sizing:border-box;background:var(--surface);border:1px solid var(--border);border-radius:17px}
 .auth-logo{text-align:center;font-size:30px;font-weight:900;letter-spacing:3px}
 .auth-logo span{color:var(--lime)}
-.auth-sub{text-align:center;color:var(--muted);font-size:12px;margin:8px 0 22px}
+.auth-sub{text-align:center;color:var(--muted);font-size:12px;margin:8px 0 24px}
 .auth-tabs{display:flex;gap:8px;margin-bottom:20px}
-.auth-tabs button{flex:1;padding:11px;border:1px solid var(--border);border-radius:8px;background:transparent;color:white}
+.auth-tabs button{flex:1;padding:12px;border:1px solid var(--border);border-radius:8px;background:transparent;color:white}
 .auth-tabs button.active{background:var(--lime);color:#080b09;font-weight:bold}
-.auth-form label{display:block;color:var(--lime);font-size:11px;margin:13px 0 6px}
-.auth-form input{width:100%;padding:13px;background:#080b09;border:1px solid #30442d;border-radius:8px;color:white}
-.auth-submit{width:100%;margin-top:20px}
-.auth-switch{text-align:center;color:var(--muted);font-size:12px;margin-top:17px}
-.auth-switch button{background:none;border:0;color:var(--lime)}
-.auth-message{color:var(--lime);font-size:12px;margin-top:13px;overflow-wrap:anywhere}
-footer{padding:25px 0;margin-top:40px;border-top:1px solid var(--border);color:var(--muted);font-size:11px}
+.auth-form label{display:block;color:var(--lime);font-size:11px;margin:14px 0 6px}
+.auth-form input{width:100%;box-sizing:border-box;padding:13px;background:#080b09;border:1px solid #30442d;border-radius:8px;color:white}
+.auth-submit{width:100%;margin-top:20px;min-height:44px}
+.auth-switch{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
+.auth-switch button{border:0;background:none;color:var(--lime)}
+.auth-message{color:var(--lime);font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+footer{border-top:1px solid var(--border);margin-top:40px;padding:24px 0;color:var(--muted);font-size:11px}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:700px){
- .layout{display:block}.sidebar{display:none;position:fixed;top:63px;left:0;bottom:0;width:260px;z-index:30;overflow:auto;box-shadow:15px 0 35px #000}
- .sidebar.open{display:block}.menu-btn{display:block}.profile-pill #customerName{display:none}
- main{padding:22px 4%}.welcome{padding:20px}.welcome-mark{font-size:65px}
- .welcome h2{font-size:21px}.two-col{grid-template-columns:1fr}
- .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
- .page-heading{align-items:flex-start}.page-heading h1{font-size:23px}
+.layout{display:block}
+.sidebar{display:none;position:fixed;z-index:30;top:63px;bottom:0;left:0;width:250px;overflow:auto;box-shadow:15px 0 30px #000}
+.sidebar.open{display:block}
+.menu-btn{display:block}
+.topbar{min-height:63px}
+.profile-pill #customerName{display:none}
+main{padding:22px 4%}
+.two-col{grid-template-columns:1fr}
+.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.welcome{padding:20px}
+.welcome-mark{font-size:60px}
+.welcome h2{font-size:21px}
 }
-@media(max-width:380px){.grid{gap:8px}.card{padding:13px}.balance-card h2{font-size:18px}.welcome-mark{display:none}.form-grid{grid-template-columns:1fr}}
+@media(max-width:380px){.grid{gap:8px}.card{padding:12px}.card h2{font-size:18px}.welcome-mark{display:none}}
 </style>
 </head>
 <body>
 
 <section id="authScreen" class="auth-wrap">
-  <div class="auth-logo">VEST<span>ORA</span></div>
-  <p class="auth-sub">INVEST · GROW · PROSPER</p>
-  <div class="auth-tabs">
-    <button id="loginTab" class="active" type="button">Login</button>
-    <button id="registerTab" type="button">Register</button>
-  </div>
-  <form id="loginForm" class="auth-form">
-    <h2>Welcome Back</h2>
-    <p class="muted">Sign in to your VESTORA account.</p>
-    <label for="loginEmail">Email Address</label>
-    <input id="loginEmail" type="email" autocomplete="email" required>
-    <label for="loginPassword">Password</label>
-    <input id="loginPassword" type="password" autocomplete="current-password" required>
-    <button class="btn auth-submit" type="submit">Sign In</button>
-    <p class="auth-switch">New to VESTORA? <button id="showRegister" type="button">Create an account</button></p>
-  </form>
-  <form id="registerForm" class="auth-form" hidden>
-    <h2>Create Account</h2>
-    <p class="muted">Start your VESTORA account.</p>
-    <label for="fullName">Full Name</label>
-    <input id="fullName" type="text" autocomplete="name" required>
-    <label for="registerEmail">Email Address</label>
-    <input id="registerEmail" type="email" autocomplete="email" required>
-    <label for="registerPassword">Create Password</label>
-    <input id="registerPassword" type="password" minlength="8" autocomplete="new-password" required>
-    <button class="btn auth-submit" type="submit">Create Account</button>
-    <p class="auth-switch">Already registered? <button id="showLogin" type="button">Sign in</button></p>
-  </form>
-  <p id="authMessage" class="auth-message" role="status"></p>
+ <div class="auth-logo">VEST<span>ORA</span></div>
+ <p class="auth-sub">INVEST · GROW · PROSPER</p>
+ <div class="auth-tabs">
+  <button id="loginTab" class="active" type="button">Login</button>
+  <button id="registerTab" type="button">Register</button>
+ </div>
+ <form id="loginForm" class="auth-form">
+  <h2>Welcome Back</h2>
+  <p class="muted">Sign in to your VESTORA account.</p>
+  <label for="loginEmail">Email Address</label>
+  <input id="loginEmail" type="email" autocomplete="email" required>
+  <label for="loginPassword">Password</label>
+  <input id="loginPassword" type="password" autocomplete="current-password" required>
+  <button class="btn auth-submit" type="submit">Sign In</button>
+  <p class="auth-switch">New to VESTORA? <button id="showRegister" type="button">Create an account</button></p>
+ </form>
+ <form id="registerForm" class="auth-form" hidden>
+  <h2>Create Account</h2>
+  <p class="muted">Join VESTORA today.</p>
+  <label for="fullName">Full Name</label>
+  <input id="fullName" type="text" autocomplete="name" required>
+  <label for="registerEmail">Email Address</label>
+  <input id="registerEmail" type="email" autocomplete="email" required>
+  <label for="registerPassword">Password (minimum 8 characters)</label>
+  <input id="registerPassword" type="password" minlength="8" autocomplete="new-password" required>
+  <button class="btn auth-submit" type="submit">Create Account</button>
+  <p class="auth-switch">Already registered? <button id="showLogin" type="button">Sign in</button></p>
+ </form>
+ <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
 </section>
 
 <div id="dashboardScreen" class="app" hidden>
 <header class="topbar">
-  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-  <a class="logo" href="#dashboard">VEST<span>ORA</span></a>
-  <div class="top-actions">
-    <button class="icon-btn" data-page="notifications" aria-label="Notifications">♧</button>
-    <div class="profile-pill"><span class="avatar" id="avatarInitial">V</span><span id="customerName">My Account</span></div>
-  </div>
+ <button id="menuBtn" class="menu-btn" type="button">☰</button>
+ <a class="logo" href="#dashboard">VEST<span>ORA</span></a>
+ <div class="top-actions">
+  <button class="icon-btn" type="button" data-page="notifications">♧</button>
+  <div class="profile-pill"><span class="avatar" id="avatarInitial">V</span><span id="customerName">My Account</span></div>
+ </div>
 </header>
 
 <div class="layout">
-<aside class="sidebar" id="sidebar">
-  <div class="side-label">MAIN MENU</div>
-  <a class="nav-link active" href="#dashboard" data-page="dashboard"><span>▦</span> Dashboard</a>
-  <a class="nav-link" href="#investments" data-page="investments"><span>◈</span> Investments</a>
-  <a class="nav-link" href="#tasks" data-page="tasks"><span>✓</span> Daily Tasks</a>
-  <a class="nav-link" href="#affiliate" data-page="affiliate"><span>♧</span> Affiliate Centre</a>
-  <div class="side-label">MY FINANCES</div>
-  <a class="nav-link" href="#wallet" data-page="wallet"><span>◉</span> Wallets</a>
-  <a class="nav-link" href="#payments" data-page="payments"><span>↔</span> Deposits & Withdrawals</a>
-  <a class="nav-link" href="#activity" data-page="activity"><span>↗</span> Transaction History</a>
-  <a class="nav-link" href="#rewards" data-page="rewards"><span>★</span> Rewards & Promos</a>
-  <div class="side-label">ACCOUNT</div>
-  <a class="nav-link" href="#notifications" data-page="notifications"><span>♧</span> Notifications</a>
-  <a class="nav-link" href="#documents" data-page="documents"><span>▤</span> Documents</a>
-  <a class="nav-link" href="#support" data-page="support"><span>✉</span> Support Centre</a>
-  <a class="nav-link" href="#profile" data-page="profile"><span>◎</span> My Profile</a>
-  <a class="nav-link" href="#settings" data-page="settings"><span>⚙</span> Settings</a>
-  <a class="nav-link" href="#security" data-page="security"><span>⬡</span> Security Centre</a>
-  <div class="sidebar-note">Your VESTORA account. Invest responsibly and review all investment terms before committing funds.</div>
-  <button class="btn btn-outline" id="logoutBtn" style="width:100%">Sign Out</button>
+<aside id="sidebar" class="sidebar">
+ <div class="side-label">MAIN MENU</div>
+ <a class="nav-link active" href="#dashboard" data-page="dashboard"><span>▦</span>Dashboard</a>
+ <a class="nav-link" href="#investments" data-page="investments"><span>◈</span>Investments</a>
+ <a class="nav-link" href="#tasks" data-page="tasks"><span>✓</span>Daily Tasks</a>
+ <a class="nav-link" href="#affiliate" data-page="affiliate"><span>♧</span>Affiliate Centre</a>
+ <div class="side-label">MY FINANCES</div>
+ <a class="nav-link" href="#wallet" data-page="wallet"><span>◉</span>Wallets</a>
+ <a class="nav-link" href="#payments" data-page="payments"><span>↔</span>Deposits & Withdrawals</a>
+ <a class="nav-link" href="#activity" data-page="activity"><span>↗</span>Transaction History</a>
+ <a class="nav-link" href="#rewards" data-page="rewards"><span>★</span>Rewards & Promos</a>
+ <div class="side-label">ACCOUNT</div>
+ <a class="nav-link" href="#notifications" data-page="notifications"><span>♧</span>Notifications</a>
+ <a class="nav-link" href="#documents" data-page="documents"><span>▤</span>Documents</a>
+ <a class="nav-link" href="#support" data-page="support"><span>✉</span>Support Centre</a>
+ <a class="nav-link" href="#profile" data-page="profile"><span>◎</span>My Profile</a>
+ <a class="nav-link" href="#settings" data-page="settings"><span>⚙</span>Settings</a>
+ <a class="nav-link" href="#security" data-page="security"><span>⬡</span>Security Centre</a>
+ <button class="btn btn-outline" id="logoutBtn" type="button" style="width:100%;margin-top:22px">Sign Out</button>
 </aside>
 
 <main>
 <section class="page active" id="page-dashboard">
-  <div class="page-heading">
-    <div><p class="eyebrow">VESTORA / OVERVIEW</p><h1>Dashboard</h1><p class="muted">Welcome back, <span id="welcomeName">Investor</span>.</p></div>
-    <span class="status">ACCOUNT PORTAL</span>
-  </div>
-  <div class="welcome">
-    <div><p class="eyebrow">INVEST · GROW · PROSPER</p><h2>Build your future<br><span>with confidence.</span></h2><p class="muted">Your financial journey, all in one place.</p></div>
-    <div class="welcome-mark">V</div>
-  </div>
-  <div class="section-title"><div><p class="eyebrow">YOUR FINANCIAL OVERVIEW</p><h2>Account Summary</h2></div></div>
-  <div class="grid">
-    <article class="card balance-card"><p>Available Balance</p><h2>₦—</h2><small>Awaiting secure wallet connection</small></article>
-    <article class="card balance-card"><p>Investment Balance</p><h2>₦—</h2><small>Awaiting portfolio connection</small></article>
-    <article class="card balance-card"><p>Task Earnings</p><h2>₦—</h2><small>Awaiting task records</small></article>
-    <article class="card balance-card"><p>Affiliate Earnings</p><h2>₦—</h2><small>Awaiting referral records</small></article>
-  </div>
-  <div class="section-title"><div><p class="eyebrow">QUICK ACCESS</p><h2>Manage Your Account</h2></div></div>
-  <div class="quick-grid">
-    <a class="quick" href="#payments" data-page="payments"><span class="quick-icon">＋</span><strong>Deposit</strong><small>Add funds</small></a>
-    <a class="quick" href="#payments" data-page="payments"><span class="quick-icon">↗</span><strong>Withdraw</strong><small>Request payout</small></a>
-    <a class="quick" href="#investments" data-page="investments"><span class="quick-icon">◈</span><strong>Invest</strong><small>Explore plans</small></a>
-    <a class="quick" href="#tasks" data-page="tasks"><span class="quick-icon">✓</span><strong>Tasks</strong><small>Earn rewards</small></a>
-    <a class="quick" href="#affiliate" data-page="affiliate"><span class="quick-icon">♧</span><strong>Affiliate</strong><small>Refer friends</small></a>
-  </div>
-  <div class="two-col">
-    <article class="panel"><div class="panel-head"><h2>Investment Plans</h2><button class="btn btn-outline" data-page="investments">View plans</button></div><div class="empty">Available investment plans will appear here after the plan database is connected.</div></article>
-    <article class="panel"><div class="panel-head"><h2>Recent Activity</h2><button class="btn btn-outline" data-page="activity">View history</button></div><div class="empty">Your verified account activity will appear here.</div></article>
-  </div>
+ <div class="page-heading"><div><p class="eyebrow">VESTORA / OVERVIEW</p><h1>Dashboard</h1><p class="muted">Welcome back, <span id="welcomeName">Investor</span>.</p></div><span class="status">CUSTOMER PORTAL</span></div>
+ <div class="welcome"><div><p class="eyebrow">INVEST · GROW · PROSPER</p><h2>Build your future<br><span>with confidence.</span></h2><p class="muted">Your financial journey, all in one place.</p></div><div class="welcome-mark">V</div></div>
+ <div class="section-title"><p class="eyebrow">YOUR FINANCIAL OVERVIEW</p><h2>Account Summary</h2></div>
+ <div class="grid">
+  <article class="card"><p>Available Balance</p><h2>₦—</h2><small class="muted">Wallet connection pending</small></article>
+  <article class="card"><p>Investment Balance</p><h2>₦—</h2><small class="muted">Portfolio connection pending</small></article>
+  <article class="card"><p>Task Earnings</p><h2>₦—</h2><small class="muted">Task records pending</small></article>
+  <article class="card"><p>Affiliate Earnings</p><h2>₦—</h2><small class="muted">Referral records pending</small></article>
+ </div>
+ <div class="section-title"><p class="eyebrow">QUICK ACCESS</p><h2>Manage Your Account</h2></div>
+ <div class="quick-grid">
+  <a class="quick" href="#payments" data-page="payments"><span class="quick-icon">＋</span><strong>Deposit</strong><small>Add funds</small></a>
+  <a class="quick" href="#payments" data-page="payments"><span class="quick-icon">↗</span><strong>Withdraw</strong><small>Request payout</small></a>
+  <a class="quick" href="#investments" data-page="investments"><span class="quick-icon">◈</span><strong>Invest</strong><small>Explore plans</small></a>
+  <a class="quick" href="#tasks" data-page="tasks"><span class="quick-icon">✓</span><strong>Tasks</strong><small>Earn rewards</small></a>
+  <a class="quick" href="#affiliate" data-page="affiliate"><span class="quick-icon">♧</span><strong>Affiliate</strong><small>Refer friends</small></a>
+ </div>
+ <div class="two-col">
+  <article class="panel"><h2>Investment Plans</h2><div class="empty">Verified investment plans will appear here after database connection.</div></article>
+  <article class="panel"><h2>Recent Activity</h2><div class="empty">Your verified account activity will appear here.</div></article>
+ </div>
 </section>
 
-<section class="page" id="page-investments">
-  <div class="page-heading"><div><p class="eyebrow">GROW YOUR WEALTH</p><h1>Investments</h1><p class="muted">Review available plans and your investment portfolio.</p></div></div>
-  <div class="grid">
-    <article class="card"><p class="muted">Active Investments</p><h2>—</h2></article>
-    <article class="card"><p class="muted">Invested Capital</p><h2>₦—</h2></article>
-    <article class="card"><p class="muted">Maturing Soon</p><h2>—</h2></article>
-    <article class="card"><p class="muted">Completed</p><h2>—</h2></article>
-  </div>
-  <article class="panel"><h2>Available Plans</h2><div class="empty">Plans will be displayed here with verified terms, duration, fees, risks and eligibility after backend connection. No return is guaranteed.</div></article>
-  <article class="panel"><h2>My Portfolio</h2><div class="empty">Your active, matured and cancelled investment records will appear here.</div></article>
-</section>
+<section class="page" id="page-investments"><div class="page-heading"><div><p class="eyebrow">GROW YOUR WEALTH</p><h1>Investments</h1><p class="muted">Review plans and your investment portfolio.</p></div></div><article class="panel"><h2>Available Investment Plans</h2><div class="empty">Plans will appear with verified terms, duration, fees and risk information after backend connection. Returns are not guaranteed.</div></article><article class="panel"><h2>My Portfolio</h2><div class="empty">Your active, matured and completed investment records will appear here.</div></article></section>
 
-<section class="page" id="page-tasks">
-  <div class="page-heading"><div><p class="eyebrow">EARN REWARDS</p><h1>Daily Tasks</h1><p class="muted">View tasks, submit evidence and track reviews.</p></div></div>
-  <article class="panel"><h2>Available Tasks</h2><div class="empty">Tasks and their reward terms will appear when configured by VESTORA.</div></article>
-  <article class="panel"><h2>My Submissions</h2><div class="empty">Your submitted tasks and approval history will appear here.</div></article>
-</section>
+<section class="page" id="page-tasks"><div class="page-heading"><div><p class="eyebrow">EARN REWARDS</p><h1>Daily Tasks</h1><p class="muted">View tasks and track submissions.</p></div></div><article class="panel"><h2>Available Tasks</h2><div class="empty">Tasks will appear here when configured by VESTORA.</div></article><article class="panel"><h2>My Submissions</h2><div class="empty">Your submitted tasks and review history will appear here.</div></article></section>
 
-<section class="page" id="page-affiliate">
-  <div class="page-heading"><div><p class="eyebrow">GROW OUR COMMUNITY</p><h1>Affiliate Centre</h1><p class="muted">Manage referrals and track eligible commissions.</p></div></div>
-  <div class="grid">
-    <article class="card"><p class="muted">Total Referrals</p><h2>—</h2></article>
-    <article class="card"><p class="muted">Approved Referrals</p><h2>—</h2></article>
-    <article class="card"><p class="muted">Commissions</p><h2>₦—</h2></article>
-    <article class="card"><p class="muted">Available Affiliate Funds</p><h2>₦—</h2></article>
-  </div>
-  <article class="panel"><h2>Your Referral Link</h2><div class="empty">Your unique referral link will be generated from your verified account after referral integration.</div></article>
-  <article class="panel"><h2>Referral History</h2><div class="empty">Referral records and commission history will appear here.</div></article>
-</section>
+<section class="page" id="page-affiliate"><div class="page-heading"><div><p class="eyebrow">GROW OUR COMMUNITY</p><h1>Affiliate Centre</h1><p class="muted">Manage referrals and commissions.</p></div></div><article class="panel"><h2>Your Referral Link</h2><div class="empty">Your unique referral link will appear after referral integration.</div></article><article class="panel"><h2>Referral History</h2><div class="empty">Referral and commission records will appear here.</div></article></section>
 
-<section class="page" id="page-wallet">
-  <div class="page-heading"><div><p class="eyebrow">MY FINANCES</p><h1>My Wallets</h1><p class="muted">Your balances will be sourced from the secure transaction ledger.</p></div></div>
-  <div class="grid">
-    <article class="card"><p class="muted">Available Wallet</p><h2>₦—</h2></article>
-    <article class="card"><p class="muted">Investment Wallet</p><h2>₦—</h2></article>
-    <article class="card"><p class="muted">Task Wallet</p><h2>₦—</h2></article>
-    <article class="card"><p class="muted">Affiliate Wallet</p><h2>₦—</h2></article>
-  </div>
-  <div class="notice">Wallet balances are not yet connected to the secure ledger. Do not use displayed placeholders as proof of funds.</div>
-  <article class="panel"><h2>Wallet Activity</h2><div class="empty">Verified wallet entries will appear here.</div></article>
-</section>
+<section class="page" id="page-wallet"><div class="page-heading"><div><p class="eyebrow">MY FINANCES</p><h1>My Wallets</h1></div></div><div class="grid"><article class="card"><p>Available Wallet</p><h2>₦—</h2></article><article class="card"><p>Investment Wallet</p><h2>₦—</h2></article><article class="card"><p>Task Wallet</p><h2>₦—</h2></article><article class="card"><p>Affiliate Wallet</p><h2>₦—</h2></article></div><div class="notice">Wallet balances must come from the secure transaction ledger. These placeholders are not account balances.</div></section>
 
-<section class="page" id="page-payments">
-  <div class="page-heading"><div><p class="eyebrow">PAYMENTS</p><h1>Deposits & Withdrawals</h1><p class="muted">Both payment operations are organised on this page.</p></div></div>
-  <div class="two-col">
-    <article class="panel">
-      <h2>Make a Deposit</h2>
-      <p class="muted">Deposit instructions and references will be supplied by the configured payment provider.</p>
-      <div class="field"><label>Amount (NGN)</label><input type="number" min="1" placeholder="Enter amount" disabled></div>
-      <div class="field"><label>Payment Reference</label><input placeholder="Generated reference" disabled></div>
-      <div class="field"><label>Payment Proof</label><input type="file" accept="image/*,.pdf" disabled></div>
-      <button class="btn" disabled>Deposit service not connected</button>
-      <div class="notice">Deposit submission will be enabled only after verified payment integration and server-side confirmation.</div>
-    </article>
-    <article class="panel">
-      <h2>Request a Withdrawal</h2>
-      <p class="muted">Withdrawal requests require available verified funds and security checks.</p>
-      <div class="field"><label>Withdrawal Source</label><select disabled><option>Select wallet</option><option>Available balance</option><option>Task earnings</option><option>Affiliate earnings</option></select></div>
-      <div class="field"><label>Amount (NGN)</label><input type="number" min="1" placeholder="Enter amount" disabled></div>
-      <div class="field"><label>Bank Details</label><input placeholder="Verified bank account" disabled></div>
-      <button class="btn" disabled>Withdrawal service not connected</button>
-      <div class="notice">Future withdrawals will require password or supported device biometric verification, risk checks and approval.</div>
-    </article>
-  </div>
-  <article class="panel"><h2>Payment History</h2><div class="empty">Deposit and withdrawal records, references, statuses and receipts will appear here.</div></article>
-</section>
+<section class="page" id="page-payments"><div class="page-heading"><div><p class="eyebrow">PAYMENT CENTRE</p><h1>Deposits & Withdrawals</h1><p class="muted">Both payment operations in one place.</p></div></div><div class="two-col"><article class="panel"><h2>Make a Deposit</h2><p class="muted">Payment instructions will be provided by the configured payment provider.</p><div class="field"><label>Amount (NGN)</label><input type="number" placeholder="Enter amount" disabled></div><div class="field"><label>Payment proof</label><input type="file" disabled></div><button class="btn" disabled>Deposit service not connected</button></article><article class="panel"><h2>Request Withdrawal</h2><div class="field"><label>Withdrawal Source</label><select disabled><option>Select wallet</option><option>Available Balance</option><option>Task Earnings</option><option>Affiliate Earnings</option></select></div><div class="field"><label>Amount (NGN)</label><input type="number" placeholder="Enter amount" disabled></div><div class="field"><label>Bank Details</label><input placeholder="Verified bank account" disabled></div><button class="btn" disabled>Withdrawal service not connected</button><div class="notice">Future withdrawals will require secure verification and approval.</div></article></div><article class="panel"><h2>Payment History</h2><div class="empty">Deposit and withdrawal records will appear here.</div></article></section>
 
-<section class="page" id="page-activity">
-  <div class="page-heading"><div><p class="eyebrow">ACCOUNT HISTORY</p><h1>Transaction History</h1><p class="muted">A record of verified account transactions.</p></div></div>
-  <article class="panel"><div class="table-wrap"><table><thead><tr><th>Reference</th><th>Type</th><th>Amount</th><th>Date</th><th>Status</th></tr><
+<section class="page" id="page-activity"><div class="page-heading"><div><p class="eyebrow">ACCOUNT HISTORY</p><h1>Transaction History</h1></div></div><article class="panel"><div class="empty">Verified transaction records will appear here.</div></article></section>
+
+<section class="page" id="page-rewards"><div class="page-heading"><div><p class="eyebrow">BENEFITS</p><h1>Rewards & Promos</h1></div></div><article class="panel"><h2>Promo Codes</h2><div class="empty">Eligible promotional codes and rewards will appear here.</div></article><article class="panel"><h2>Membership & Achievements</h2><div class="empty">Membership benefits and verified achievements will appear here.</div></article></section>
+
+<section class="page" id="page-notifications"><div class="page-heading"><div><p class="eyebrow">UPDATES</p><h1>Notifications</h1></div></div><article class="panel"><h2>Notification History</h2><div class="empty">Announcements, payment updates, investment alerts, task rewards, affiliate and security notifications will appear here.</div></article></section>
+
+<section class="page" id="page-documents"><div class="page-heading"><div><p class="eyebrow">MY RECORDS</p><h1>Document Centre</h1></div></div><article class="panel"><div class="empty">Receipts, statements, agreements and account documents will appear here.</div></article></section>
+
+<section class="page" id="page-support"><div class="page-heading"><div><p class="eyebrow">CUSTOMER CARE</p><h1>Support Centre</h1></div></div><article class="panel"><p class="muted">Get help with your VESTORA account.</p><a class="btn" href="support.html">Open Support Centre</a></article></section>
+
+<section class="page" id="page-profile"><div class="page-heading"><div><p class="eyebrow">YOUR ACCOUNT</p><h1>My Profile</h1></div></div><article class="panel"><div class="field"><label>Full Name</label><input id="profileName" readonly></div><div class="field"><label>Email Address</label><input id="profileEmail" readonly></div></article></section>
+
+<section class="page" id="page-settings"><div class="page-heading"><div><p class="eyebrow">PREFERENCES</p><h1>Settings</h1></div></div><article class="panel"><h2>Notification Preferences</h2><div class="list-row"><span>Email notifications</span><span class="status">Setup pending</span></div><div class="list-row"><span>SMS notifications</span><span class="status">Setup pending</span></div><div class="list-row"><span>Push notifications</span><span class="status">Setup pending</span></div><div class="list-row"><span>Notification tones</span><span class="status">Setup pending</span></div></article></section>
+
+<section class="page" id="page-security"><div class="page-heading"><div><p class="eyebrow">ACCOUNT PROTECTION</p><h1>Security Centre</h1></div></div><article class="panel"><h2>Security Settings</h2><div class="list-row"><span>Password authentication</span><span class="status">Enabled</span></div><div class="list-row"><span>Two-factor authentication</span><span class="status">Setup pending</span></div><div class="list-row"><span>Trusted devices</span><span class="status">Setup pending</span></div><div class="notice">Never share your password or verification codes.</div></article></section>
+
+<footer><a class="logo" href="#dashboard">VEST<span>ORA</span></a><p>INVEST · GROW · PROSPER</p><p>© 2026 VESTORA. All rights reserved.</p></footer>
+</main>
+</div>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+const SUPABASE_URL = "https://rqdqfjcjakkbjnzhklas.supabase.co";
+const SUPABASE_KEY = "sb_publishable_Kytlo-JZc6qRwf4A98N86g_0-e91XYW";
+const REDIRECT_URL = "https://destinychukwudi209-ship-it.github.io/Vestora/";
+
+const authScreen = document.getElementById("authScreen");
+const dashboardScreen = document.getElementById("dashboardScreen");
+const loginForm = document.getElementById("loginForm");
+const registerForm = documen

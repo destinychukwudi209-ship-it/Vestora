@@ -1,429 +1,168 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080b09">
 <title>VESTORA | Invest · Grow · Prosper</title>
-
 <style>
 :root {
-  --bg:#080b09;
-  --surface:#101612;
-  --surface2:#151e18;
-  --lime:#b7ff38;
-  --text:#f4f7f2;
-  --muted:#929b91;
-  --border:rgba(255,255,255,.1);
-  --danger:#ff6868;
+  --bg: #080b09;
+  --surface: #101612;
+  --lime: #b7ff38;
+  --text: #f4f7f2;
+  --muted: #929b91;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;
+* {
+  box-sizing: border-box;
 }
-button,input{font:inherit}
-button{cursor:pointer}
-.container{width:min(1000px,92%);margin:auto}
-header{
-  padding:20px 0;border-bottom:1px solid var(--border);
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
 }
-.header-inner{
-  display:flex;justify-content:space-between;
-  align-items:center;gap:15px;
-}
-.brand{
-  color:var(--lime);font-size:27px;
-  font-weight:900;letter-spacing:3px;
-}
-.tagline{color:var(--muted);font-size:11px}
-.btn{
-  border:0;border-radius:10px;
-  padding:13px 19px;font-weight:bold;
-}
-.primary{background:var(--lime);color:#080b09}
-.outline{
-  background:transparent;color:var(--text);
-  border:1px solid var(--border);
-}
-.hero{text-align:center;padding:65px 0 35px}
-.eyebrow{
-  color:var(--lime);font-size:11px;
-  letter-spacing:2px;font-weight:bold;
-}
-.hero h1{
-  font-size:clamp(36px,7vw,60px);
-  line-height:1.1;margin:18px 0;
-}
-.hero h1 span{color:var(--lime)}
-.muted{color:var(--muted);line-height:1.6}
-.auth-card{
-  width:min(460px,100%);margin:20px auto 70px;
-  padding:25px;background:var(--surface);
-  border:1px solid var(--border);border-radius:18px;
-}
-.auth-card h2{margin-top:0}
-.tabs{
-  display:flex;gap:8px;margin:20px 0;
-}
-.tabs button{flex:1}
-.tabs button.active{
-  background:var(--lime);color:#080b09;
-  border-color:var(--lime);
-}
-.field{margin:16px 0}
-.field label{
-  display:block;margin-bottom:8px;
-  color:var(--muted);font-size:13px;
-}
-.field input{
-  width:100%;padding:14px;
-  background:var(--surface2);color:var(--text);
-  border:1px solid var(--border);border-radius:9px;
-}
-.password-wrap{display:flex;gap:8px}
-.password-wrap input{flex:1;min-width:0}
-.password-wrap button{
-  background:var(--surface2);color:var(--lime);
-  border:1px solid var(--border);border-radius:9px;
-  padding:0 12px;
-}
-.submit{width:100%;margin-top:10px}
-.message{
-  padding:12px;border-radius:9px;
-  margin:15px 0;font-size:13px;line-height:1.5;
-  display:none;
-}
-.message.error{
-  display:block;background:rgba(255,104,104,.1);
-  color:#ff9292;
-}
-.message.success{
-  display:block;background:rgba(183,255,56,.1);
-  color:var(--lime);
-}
-.account-box{
-  text-align:center;padding:20px 0;
-}
-.account-box .brand{margin-bottom:20px}
-footer{
-  text-align:center;padding:25px;
-  border-top:1px solid var(--border);
-  color:var(--muted);font-size:12px;
-}
-.hidden{display:none!important}
 </style>
 </head>
-
 <body>
 
-<header>
-  <div class="container header-inner">
-    <div>
-      <div class="brand">VESTORA</div>
-      <div class="tagline">INVEST · GROW · PROSPER</div>
-    </div>
-    <span class="eyebrow">ACCOUNT ACCESS</span>
-  </div>
-</header>
-
-<main class="container">
-
-  <section class="hero">
-    <div class="eyebrow">WELCOME TO VESTORA</div>
-    <h1>Build Your Future.<br><span>Grow With Purpose.</span></h1>
-    <p class="muted">
-      Access your VESTORA account through our secure
-      registration and login system.
-    </p>
-  </section>
-
-  <section class="auth-card" id="authCard">
-
-    <h2 id="formTitle">Welcome Back</h2>
-    <p class="muted" id="formDescription">
-      Log in to access your account.
-    </p>
-
-    <div class="tabs">
-      <button class="btn outline active" id="loginTab" type="button">
-        Login
-      </button>
-      <button class="btn outline" id="registerTab" type="button">
-        Register
-      </button>
-    </div>
-
-    <div id="authMessage" class="message"></div>
-
-    <form id="authForm">
-
-      <div class="field hidden" id="nameField">
-        <label for="fullName">Full Name</label>
-        <input
-          type="text"
-          id="fullName"
-          placeholder="Enter your full name"
-          autocomplete="name">
-      </div>
-
-      <div class="field">
-        <label for="email">Email Address</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          autocomplete="email"
-          required>
-      </div>
-
-      <div class="field">
-        <label for="password">Password</label>
-        <div class="password-wrap">
-          <input
-            type="password"
-            id="password"
-            placeholder="At least 8 characters"
-            minlength="8"
-            autocomplete="current-password"
-            required>
-          <button type="button" id="togglePassword">
-            Show
-          </button>
-        </div>
-      </div>
-
-      <button class="btn primary submit" id="submitButton" type="submit">
-        Login to VESTORA
-      </button>
-
-    </form>
-
-  </section>
-
-  <section class="auth-card hidden" id="accountCard">
-    <div class="account-box">
-      <div class="brand">VESTORA</div>
-      <div class="eyebrow">AUTHENTICATION SUCCESSFUL</div>
-      <h2>You're logged in!</h2>
-      <p class="muted" id="accountEmail"></p>
-      <p class="muted">
-        Your account authentication is active.
-        Your customer dashboard will be added in the next step.
-      </p>
-      <button class="btn outline submit" id="logoutButton" type="button">
-        Log Out
-      </button>
-      <div id="logoutMessage" class="message"></div>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  VESTORA · INVEST · GROW · PROSPER
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const SUPABASE_URL = "https://rqdqfjcjakkbjnzhklas.supabase.co";
-
-const SUPABASE_ANON_KEY =
-"sb_publishable_Kytlo-JZc6qRwf4A98N86g_0-e91XYW";
-
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
-
-const authForm = document.getElementById("authForm");
-const authCard = document.getElementById("authCard");
-const accountCard = document.getElementById("accountCard");
-const authMessage = document.getElementById("authMessage");
-const logoutMessage = document.getElementById("logoutMessage");
-
-const loginTab = document.getElementById("loginTab");
-const registerTab = document.getElementById("registerTab");
-const nameField = document.getElementById("nameField");
-const fullName = document.getElementById("fullName");
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-
-const formTitle = document.getElementById("formTitle");
-const formDescription = document.getElementById("formDescription");
-const submitButton = document.getElementById("submitButton");
-
-let currentMode = "login";
-
-function showMessage(element, message, type) {
-  element.textContent = message;
-  element.className = "message " + type;
-}
-
-function clearMessage() {
-  authMessage.textContent = "";
-  authMessage.className = "message";
-}
-
-function setMode(mode) {
-  currentMode = mode;
-  clearMessage();
-
-  const registering = mode === "register";
-
-  nameField.classList.toggle("hidden", !registering);
-  fullName.required = registering;
-
-  loginTab.classList.toggle("active", !registering);
-  registerTab.classList.toggle("active", registering);
-
-  formTitle.textContent = registering
-    ? "Create Your Account"
-    : "Welcome Back";
-
-  formDescription.textContent = registering
-    ? "Register for your VESTORA account."
-    : "Log in to access your account.";
-
-  submitButton.textContent = registering
-    ? "Create Account"
-    : "Login to VESTORA";
-}
-
-loginTab.addEventListener("click", () => setMode("login"));
-registerTab.addEventListener("click", () => setMode("register"));
-
-document.getElementById("togglePassword")
-.addEventListener("click", function() {
-  const showing = password.type === "text";
-  password.type = showing ? "password" : "text";
-  this.textContent = showing ? "Show" : "Hide";
-});
-
-function showAccount(user) {
-  authCard.classList.add("hidden");
-  accountCard.classList.remove("hidden");
-  document.getElementById("accountEmail").textContent =
-    user.email || "Authenticated account";
-}
-
-function showLogin() {
-  accountCard.classList.add("hidden");
-  authCard.classList.remove("hidden");
-}
-
-authForm.addEventListener("submit", async function(event) {
-  event.preventDefault();
-  clearMessage();
-
-  const userEmail = email.value.trim();
-  const userPassword = password.value;
-
-  if (currentMode === "register" &&
-      fullName.value.trim().length < 2) {
-    showMessage(authMessage, "Please enter your full name.", "error");
-    return;
-  }
-
-  if (userPassword.length < 8) {
-    showMessage(authMessage, "Your password must contain at least 8 characters.", "error");
-    return;
-  }
-
-  submitButton.disabled = true;
-  submitButton.textContent = "Please wait...";
-
-  try {
-    if (currentMode === "register") {
-
-      const { data, error } = await supabaseClient.auth.signUp({
-        email: userEmail,
-        password: userPassword,
-        options: {
-          data: {
-            full_name: fullName.value.trim()
-          }
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.session && data.user) {
-        showAccount(data.user);
-      } else {
-        showMessage(
-          authMessage,
-          "Registration received. Please check your email for the confirmation link before logging in.",
-          "success"
-        );
-      }
-
-    } else {
-
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: userEmail,
-        password: userPassword
-      });
-
-      if (error) throw error;
-
-      if (data.user) showAccount(data.user);
-    }
-
-  } catch (error) {
-    showMessage(authMessage, error.message || "Authentication failed. Please try again.", "error");
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent =
-      currentMode === "register" ? "Create Account" : "Login to VESTORA";
-  }
-});
-
-document.getElementById("logoutButton")
-.addEventListener("click", async function() {
-  this.disabled = true;
-
-  try {
-    const { error } = await supabaseClient.auth.signOut();
-    if (error) throw error;
-
-    showLogin();
-    authForm.reset();
-    setMode("login");
-
-  } catch (error) {
-    showMessage(logoutMessage, error.message || "Logout failed.", "error");
-  } finally {
-    this.disabled = false;
-  }
-});
-
-supabaseClient.auth.onAuthStateChange((event, session) => {
-  if (session && session.user) {
-    showAccount(session.user);
-  } else {
-    showLogin();
-  }
-});
-
-async function startApp() {
-  const { data, error } = await supabaseClient.auth.getSession();
-
-  if (error) {
-    showMessage(authMessage, error.message, "error");
-    return;
-  }
-
-  if (data.session) {
-    showAccount(data.session.user);
-  }
-}
-
-startApp();
-</script>
+<div id="app">
+  <h1>VESTORA</h1>
+  <p>Invest · Grow · Prosper</p>
+</div>
 
 </body>
-          </html>
-          
+</html><div id="app">
+  <h1>WELCOME TO VESTORA</h1>
+  <p>Build Your Future. Grow With Purpose.</p>
+
+  <div id="auth">
+    <input id="email" type="email" placeholder="Email address">
+    <input id="password" type="password" placeholder="Password">
+
+    <button id="register">Create Account</button>
+    <button id="login">Login</button>
+
+    <p id="message"></p>
+  </div>
+</div><script>
+const message = document.getElementById("message");
+
+document.getElementById("register").onclick = function() {
+  message.textContent = "Registration setup pending.";
+};
+
+document.getElementById("login").onclick = function() {
+  message.textContent = "Login setup pending.";
+};
+</script><section id="plans">
+  <h2>VESTORA Investment Plans</h2>
+
+  <div class="plan">
+    <h3>Tier 1</h3>
+    <p>Simulated Capital: ₦1,500</p>
+    <p>Duration: 30 Days</p>
+    <p>Illustrative Projected Value: ₦12,000</p>
+    <p>Daily Task Reward: ₦400</p>
+    <button>Activate ₦1,500</button>
+  </div>
+</section><section id="profile">
+  <h2>My Profile</h2>
+  <input id="fullName" placeholder="Full name">
+  <input id="phone" placeholder="Phone number">
+  <p>Account Status: Active</p>
+  <button>Save Profile</button>
+</section><section id="deposit-proof">
+  <h2>Upload Deposit Proof</h2>
+  <input
+    type="file"
+    id="depositImage"
+    accept="image/*"
+  >
+  <p>Select a payment screenshot from your gallery.</p>
+  <button id="uploadProof">Upload Proof</button>
+</section><section id="admin-users">
+  <h2>Manage Users</h2>
+  <input id="userEmail" type="email"
+    placeholder="Enter user's email">
+
+  <button id="suspendUser">
+    Suspend Account
+  </button>
+
+  <button id="activateUser">
+    Reactivate Account
+  </button>
+</section><div class="plan">
+  <h3>Popular</h3>
+  <p>Capital: ₦3,000</p>
+  <p>Duration: 30 Days</p>
+  <p>Illustrative Value: ₦18,000</p>
+  <p>Daily Simulated Reward: ₦600</p>
+  <button>Activate ₦3,000</button>
+</div>
+
+<div class="plan">
+  <h3>Tier 3</h3>
+  <p>Capital: ₦6,000</p>
+  <p>Duration: 30 Days</p>
+  <p>Illustrative Value: ₦27,000</p>
+  <p>Daily Simulated Reward: ₦900</p>
+  <button>Activate ₦6,000</button>
+</div>
+
+<div class="plan">
+  <h3>Tier 4</h3>
+  <p>Capital: ₦9,000</p>
+  <p>Duration: 30 Days</p>
+  <p>Illustrative Value: ₦39,000</p>
+  <p>Daily Simulated Reward: ₦1,300</p>
+  <button>Activate ₦9,000</button>
+</div>
+
+<div class="plan">
+  <h3>Premier</h3>
+  <p>Capital: ₦12,000</p>
+  <p>Duration: 30 Days</p>
+  <p>Illustrative Value: ₦51,000</p>
+  <p>Daily Simulated Reward: ₦1,700</p>
+  <button>Activate ₦12,000</button>section {
+  background: #101612;
+  padding: 18px;
+  margin: 18px 0;
+  border-radius: 14px;
+}
+
+.plan {
+  background: #151e18;
+  padding: 16px;
+  margin: 14px 0;
+  border: 1px solid #34432d;
+  border-radius: 12px;
+}
+
+button {
+  background: #b7ff38;
+  color: #080b09;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+</div><section id="withdrawal-times">
+  <h2>Withdrawal Schedule</h2>
+
+  <p>Affiliate Withdrawal</p>
+  <p>8:30 AM – 10:00 AM</p>
+
+  <p>Task Withdrawal</p>
+  <p>Every 30th: 7:00 PM – 9:30 PM</p>
+</section>document.getElementById("uploadProof").onclick = function() {
+  const image = document.getElementById("depositImage");
+  if (!image.files.length) {
+    alert("Please select your deposit screenshot.");
+    return;
+  }
+  alert("Image selected. Secure upload will be connected next.");
+};
+
+<p>Educational simulation only. Values are illustrative, not guaranteed returns.</p>
